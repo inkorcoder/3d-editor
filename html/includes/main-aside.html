@@ -1,0 +1,118 @@
+<aside class="main-aside" id="main-aside" v-bind:class="{'active':isActive}">
+
+	<div class="header">
+		<div class="row">
+			<div class="col-12">
+				<div class="relative">
+					<input type="text" placeholder="Type to search..." class="input search" v-model="searchModel">
+					<span class="clear-input" v-if="searchModel !== ''" v-on:click="clearInput">
+						<i class="icon icon-close"></i>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- objects -->
+	<div v-if="instrument === 'objects'" class="filter">
+		<div class="row spaced">
+			<div class="col-6">
+				<button type="button" v-on:click="showAllLists" class="btn btn-block">Show all</button>
+			</div>
+			<div class="col-6">
+				<button type="button" v-on:click="hideAllLists" class="btn btn-block">Hide all</button>
+			</div>
+		</div>
+	</div>
+	<div v-if="instrument === 'objects'" class="list">
+		<ul class="clear-list" v-bind:class="{'active': lists[folder.name]}" v-for="folder in data | orderBy 'name'">
+			<li class="anchor" v-on:click="toggleList(folder.name)"><i class="icon icon-folder"></i> {{folder.name}}</li>
+			<li v-for="object in folder.files | filterBy searchModel" v-if="lists[folder.name]" onclick="addToArea('{{object}}')">{{ object }}</li>
+		</ul>
+	</div>
+	<footer v-if="instrument === 'objects'">
+		<div class="row">
+			<div class="col-6">Total: </div>
+			<div class="col-6 right">current group: </div>
+		</div>
+	</footer><!-- objects -->
+
+	<!-- terrain -->
+	<div v-if="instrument === 'terrain'" class="filter">
+		<div class="clearfix spaced">
+			<div class="col-6"><button type="button" class="btn btn-primary btn-block" v-on:click="showTerrainPopup">Add new</button></div>
+			<div class="col-6"><button type="button" class="btn btn-block" v-on:click="terrain.remove()">Remove</button></div>
+		</div>
+	</div>
+	<div v-if="instrument === 'terrain'" class="list">
+		<div class="clearfix spaced">
+			<div class="col-12">
+				<h3>Terrain properties</h3>
+			</div>
+		</div>
+		<div class="clearfix spaced">
+			<div class="col-12">
+				<div class="checkbox">
+					<input type="checkbox" name="" id="terrainWireframe" v-on:change="setWireframe">
+					<label for="terrainWireframe">Wireframe</label>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix spaced">
+			<div class="col-12">
+				<label for="terrainColor">Color</label>
+				<input id="terrainColor" type="text" class="input"  v-on:focus="setColorPopupCaller" v-on:change="setTerrainColor" value="{{ terrain.color }}">
+			</div>
+		</div>
+		<span class="space"></span>
+		<div class="clearfix spaced">
+			<div class="col-12">
+				<h3>Brush</h3>
+				<span class="space"></span>
+				<ul class="clear-list tabs-list table">
+					<li v-on:click="setActiveBrushTab('height')" v-bind:class="{'active' : brushTabs.height}">Height</li>
+					<li v-on:click="setActiveBrushTab('color')" v-bind:class="{'active' : brushTabs.color}">Color</li>>
+					<li v-on:click="setActiveBrushTab('plaining')" v-bind:class="{'active' : brushTabs.plaining}">Plaining</li>
+				</ul>
+			</div>
+		</div>
+		<div class="clearfix spaced" v-if="brushTabs.height">
+			<div class="col-12"><label for="terrainWeight">Weight</label></div>
+			<div class="col-9">
+				<input type="range" id="terrainWeight" class="range" min="0.1" max="10" step="0.1" value="1" v-model="terrain.weight">
+				<div class="row slider-captions">
+					<div class="col-6 left">0.1</div>
+					<div class="col-6 right">10</div>
+				</div>
+			</div>
+			<div class="col-3">
+				<input type="text" class="input" value="{{ terrain.weight }}"  v-model="terrain.weight">
+			</div>
+		</div>
+		<div class="clearfix spaced" v-if="brushTabs.color">
+			<div class="col-12">
+				<label for="terrainBrushColor">Color</label>
+				<input id="terrainBrushColor" type="text" class="input"  v-on:focus="setColorPopupCaller" v-model="terrain.brushColor">
+			</div>
+		</div>
+		<div class="clearfix spaced" v-if="brushTabs.color || brushTabs.plaining">
+			<div class="col-12"><label for="terrainBrushSize">Brush size</label></div>
+			<div class="col-9">
+				<input type="range" id="terrainBrushSize" class="range" min="1" max="10" step="1" value="5" v-model="terrain.brushSize">
+				<div class="row slider-captions">
+					<div class="col-6 left">1</div>
+					<div class="col-6 right">10</div>
+				</div>
+			</div>
+			<div class="col-3">
+				<input type="text" class="input" value="{{ terrain.brushSize }}"  v-model="terrain.brushSize" maxlength="2">
+			</div>
+		</div>
+	</div><!-- terrain -->
+
+	<!--  -->
+	<button class="toggle-aside" v-on:click="toggleAside">
+		<i class="icon icon-navigate_next"></i>
+	</button>
+
+</aside>

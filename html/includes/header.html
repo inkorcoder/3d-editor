@@ -1,0 +1,52 @@
+<header class="main-header" id="main-header" v-bind:class="{ 'left-side-active': isLeft, 'right-side-active': isRight }">
+
+	<menu>
+<!-- 		<div class="col-4 left">
+			<button type="button" data-title="Open file"><i class="icon icon-folder"></i></button>
+			<button type="button" data-title="Save file"><i class="icon icon-sd_storage"></i></button>
+			<span class="sep"></span>
+			<div class="btn-group">
+				<button type="button" data-title="Toggle objects bar" v-bind:class="{ 'active': isLeft }" v-on:click="toggleLeftAside"><i class="icon icon-border_left"></i></button>
+				<button type="button" data-title="Toggle object properties" v-bind:class="{ 'active': isRight }" v-on:click="toggleRightAside"><i class="icon icon-border_right"></i></button>
+			</div>
+		</div>
+		<div class="col-5">
+			<ul class="clear-list tabs-list">
+				<li v-on:click="setActiveTab('terrain')" v-bind:class="{'active' : tabs.terrain}">Terrain</li>
+				<li v-on:click="setActiveTab('objects')" v-bind:class="{'active' : tabs.objects}">Objects</li>
+			</ul>
+		</div>
+		<div class="col-3 right">
+			<button type="button" data-title="Settings" ><i class="icon icon-settings"></i></button>
+			<button type="button" data-title="Exit" ><i class="icon icon-close"></i></button>
+		</div> -->
+		<ul class="clear-list">
+			<li>
+				<a href="#">File</a>
+				<ul>
+					<li><a href="#">New file<span class="help">Ctrl+N</span></a></li>
+					<li><a href="#">Open file<span class="help">Ctrl+O</span></a></li>
+					<li class="separator"></li>
+					<li><a href="#">Save file<span class="help">Ctrl+S</span></a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#">View</a>
+				<ul>
+					<li><a href="#" v-on:click="toggleLeftAside" v-bind:class="{ 'active': isLeft }"><i class="icon icon-check"></i>Left sidebar<span class="help">Ctrl+Shift+L</span></a></li>
+					<li><a href="#" v-on:click="toggleRightAside" v-bind:class="{ 'active': isRight }"><i class="icon icon-check"></i>Right sidebar<span class="help">Ctrl+Shift+R</span></a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#">Mode</a>
+				<ul>
+					<li><a href="#" v-on:click="setActiveTab('terrain')" v-bind:class="{'active' : tabs.terrain}"><i class="icon icon-check"></i>Terrain</a></li>
+					<li><a href="#" v-on:click="setActiveTab('objects')" v-bind:class="{'active' : tabs.objects}"><i class="icon icon-check"></i>Objects</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#">Preferences</a>
+			</li>
+		</ul>
+	</menu>
+</header>

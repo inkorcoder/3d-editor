@@ -1,0 +1,266 @@
+<aside class="object-aside" id="object-aside" v-bind:class="{'active':isActive}">
+
+	<div class="scene" v-bind:style="{bottom: 100-separatorPosition+'%'}">
+		<ul class="clear-list clearfix">
+			<li v-for="object in hierarchy">
+				<span class="name">{{object.uuid}}</span>
+				<span class="buttons">
+					<button class="btn"><i class="icon icon-visibility"></i></button>
+				</span>
+			</li>
+		</ul>
+	</div>
+
+	<div class="separator clearfix" id="separator" v-bind:style="{top: separatorPosition+'%'}">
+		<button class="pull-left" v-on:click="separatorUp"><i class="icon icon-expand_less"></i></button>
+		<i class="icon icon-menu"></i>
+		<button class="pull-right" v-on:click="separatorDown"><i class="icon icon-expand_more"></i></button>
+	</div>
+
+	<div class="body" v-bind:style="{top: separatorPosition+'%'}">
+
+		<div class="spaced clearfix">
+			<div class="col-12">
+				<h3>Geometry</h3>
+			</div>
+		</div>
+
+		<!-- position -->
+		<div class="spaced">
+			<div class="clearfix">
+				<div class="col-12">
+					<h4>Position</h4>
+				</div>
+			</div>
+			<div class="clearfix">
+				<div class="col-4">
+					<label for="objectPositionX">x</label>
+					<input type="text" class="input" value="{{ object.position.x }}"  v-model="objectPositionX" id="objectPositionX" v-on:keyup="setPositionX">
+				</div>
+				<div class="col-4">
+					<label for="objectPositionY">y</label>
+					<input type="text" class="input" value="{{ object.position.y }}"  v-model="objectPositionY" id="objectPositionY" v-on:keyup="setPositionY">
+				</div>
+				<div class="col-4">
+					<label for="objectPositionZ">z</label>
+					<input type="text" class="input" value="{{ object.position.z }}"  v-model="objectPositionZ" id="objectPositionZ" v-on:keyup="setPositionZ">
+				</div>
+			</div>
+		</div>
+
+		<!-- rotation -->
+		<div class="spaced">
+			<div class="clearfix">
+				<div class="col-12">
+					<h4>Rotation</h4>
+				</div>
+			</div>
+			<!-- x -->
+			<div class="clearfix">
+				<div class="col-2 range-name">
+					<button class="btn" data-title="Reset X" v-on:click="objectRotationX = 0, object.rotation.x = 0">x</button>
+				</div>
+				<div class="col-7 collapsed">
+					<input type="range" class="range" min="-180" max="180" step="1" value="0" v-model="objectRotationX" v-on:input="setRotationX">
+					<div class="row slider-captions">
+						<div class="col-4 left">-180&deg;</div>
+						<div class="col-4 center">0&deg;</div>
+						<div class="col-4 right">180&deg;</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ object.rotation.x }}"  v-model="objectRotationX" v-on:keyup="setRotationX">
+				</div>
+			</div>
+			<!-- y -->
+			<div class="clearfix">
+				<div class="col-2 range-name">
+					<button class="btn" data-title="Reset Y" v-on:click="objectRotationY = 0, object.rotation.y = 0">y</button>
+				</div>
+				<div class="col-7 collapsed">
+					<input type="range" class="range" min="-180" max="180" step="1" value="0" v-model="objectRotationY" v-on:input="setRotationY">
+					<div class="row slider-captions">
+						<div class="col-4 left">-180&deg;</div>
+						<div class="col-4 center">0&deg;</div>
+						<div class="col-4 right">180&deg;</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ object.rotation.y }}"  v-model="objectRotationY" v-on:keyup="setRotationY">
+				</div>
+			</div>
+			<!-- z -->
+			<div class="clearfix">
+				<div class="col-2 range-name">
+					<button class="btn" data-title="Reset Z" v-on:click="objectRotationZ = 0, object.rotation.z = 0">z</button>
+				</div>
+				<div class="col-7 collapsed">
+					<input type="range" class="range" min="-180" max="180" step="1" value="0" v-model="objectRotationZ" v-on:input="setRotationZ">
+					<div class="row slider-captions">
+						<div class="col-4 left">-180&deg;</div>
+						<div class="col-4 center">0&deg;</div>
+						<div class="col-4 right">180&deg;</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ object.rotation.z }}"  v-model="objectRotationZ" v-on:keyup="setRotationZ">
+				</div>
+			</div>
+		</div>
+
+		<!-- scale -->
+		<div class="spaced">
+			<div class="clearfix">
+				<div class="col-12">
+					<h4>Scale</h4>
+				</div>
+			</div>
+			<!-- x -->
+			<div class="clearfix">
+				<div class="col-2 range-name">
+					<button class="btn" data-title="Reset X" v-on:click="objectScaleX = 1, object.scale.x = 1">x</button>
+				</div>
+				<div class="col-7 collapsed">
+					<input type="range" class="range" min="0.05" max="10" step="0.05" value="1" v-model="objectScaleX" v-on:input="setScaleX">
+					<div class="row slider-captions">
+						<div class="col-6 left">0.05</div>
+						<div class="col-6 right">10</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ object.scale.x }}"  v-model="objectScaleX" v-on:keyup="setScaleX">
+				</div>
+			</div>
+			<!-- y -->
+			<div class="clearfix">
+				<div class="col-2 range-name">
+					<button class="btn" data-title="Reset Y" v-on:click="objectScaleY = 1, object.scale.y = 1">y</button>
+				</div>
+				<div class="col-7 collapsed">
+					<input type="range" class="range" min="0.05" max="10" step="0.05" value="1" v-model="objectScaleY" v-on:input="setScaleY">
+					<div class="row slider-captions">
+						<div class="col-6 left">0.05</div>
+						<div class="col-6 right">10</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ object.scale.y }}"  v-model="objectScaleY" v-on:keyup="setScaleY">
+				</div>
+			</div>
+			<!-- z -->
+			<div class="clearfix">
+				<div class="col-2 range-name">
+					<button class="btn" data-title="Reset Z" v-on:click="objectScaleZ = 1, object.scale.z = 1">z</button>
+				</div>
+				<div class="col-7 collapsed">
+					<input type="range" class="range" min="0.05" max="10" step="0.05" value="1" v-model="objectScaleZ" v-on:input="setScaleZ">
+					<div class="row slider-captions">
+						<div class="col-6 left">0.05</div>
+						<div class="col-6 right">10</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ object.scale.z }}"  v-model="objectScaleZ" v-on:keyup="setScaleZ">
+				</div>
+			</div>
+		</div>
+
+		<hr>
+
+		<!-- material -->
+		<div class="spaced">
+			<div class="col-12">
+				<h3>Material</h3>
+				<span class="space"></span>
+				<div class="select">
+					<input type="text" class="input" id="objectMaterialType" v-model="objectMaterialType" v-on:change="setMaterialType" readonly value="{{ objectMaterialType }}">
+					<label for="objectMaterialType"><span class="icon icon-unfold_more"></span></label>
+					<ul class="clear-list">
+						<li v-on:click="setMaterialType('Mesh Basic material')" 
+								v-bind:class="{'active': objectMaterialType == 'Mesh Basic material'}">
+							<i class="icon icon-check"></i>
+							Mesh Basic material
+						</li>
+						<li v-on:click="setMaterialType('Mesh Depth material')" 
+								v-bind:class="{'active': objectMaterialType == 'Mesh Depth material'}">
+							<i class="icon icon-check"></i>
+							Mesh Depth material
+						</li>
+						<li v-on:click="setMaterialType('Mesh Lambert material')" v-bind:class="{'active': objectMaterialType == 'Mesh Lambert material'}">
+							<i class="icon icon-check"></i>
+							Mesh Lambert material
+						</li>
+						<li v-on:click="setMaterialType('Mesh Normal material')" 
+								v-bind:class="{'active': objectMaterialType == 'Mesh Normal material'}">
+							<i class="icon icon-check"></i>
+							Mesh Normal material
+						</li>
+						<li v-on:click="setMaterialType('Mesh Phong material')" 
+								v-bind:class="{'active': objectMaterialType == 'Mesh Phong material'}">
+							<i class="icon icon-check"></i>
+							Mesh Phong material
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-12">
+				<h4>Reflectivity</h4>
+			</div>
+			<div class="clearfix">
+				<div class="col-9">
+					<input type="range" class="range" min="0.1" max="1" step="0.1" value="0.1" v-model="objectMaterialReflectivity" v-on:input="setMaterialReflectivity">
+					<div class="row slider-captions">
+						<div class="col-6 left">0.1</div>
+						<div class="col-6 right">1</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ objectMaterialReflectivity }}" v-model="objectMaterialReflectivity" v-on:input="setMaterialReflectivity">
+				</div>
+			</div>
+			<span class="space"></span>
+			<div class="col-12">
+				<h4>Opacity</h4>
+			</div>
+			<div class="clearfix">
+				<div class="col-7">
+					<input type="range" class="range" min="0.1" max="1" step="0.1" value="1" v-model="objectMaterialOpacity" v-on:input="setMaterialOpacity">
+					<div class="row slider-captions">
+						<div class="col-6 left">0.1</div>
+						<div class="col-6 right">1</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ objectMaterialOpacity }}" v-model="objectMaterialOpacity" v-on:input="setMaterialOpacity">
+				</div>
+				<div class="col-1 collapse-left right">
+					<div class="checkbox collapsed">
+						<input type="checkbox" name="" id="objectMaterialTransparent">
+						<label for="objectMaterialTransparent">&nbsp;</label>
+					</div>
+				</div>
+			</div>
+			<span class="space"></span>
+			<div class="clearfix">
+				<div class="col-4"><h4>Color</h4></div>
+				<div class="col-8">
+					<input type="text" class="input" v-on:focus="setColorPopupCaller" v-model="objectMaterialColor">
+				</div>
+			</div>
+			<span class="space"></span>
+			<div class="clearfix">
+				<div class="col-4"><h4>Emissive</h4></div>
+				<div class="col-8">
+					<input type="text" class="input" v-on:focus="setColorPopupCaller" v-model="objectMaterialEmissive">
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	<footer></footer>
+
+	<button class="toggle-aside" v-on:click="toggleAside">
+		<i class="icon icon-navigate_next"></i>
+	</button>
+</aside>

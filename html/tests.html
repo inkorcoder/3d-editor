@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/icons.css">
+	<link rel="stylesheet" href="css/skin.min.css">
+
+
+</head>
+<body>
+
+	<script>
+
+		grid = []
+		// 10x10 grid (100 cells)
+		for (var i = 0; i < 100; i++)	{
+			grid.push(i);
+		}
+
+		widthSegments = 20
+		heightSegments = 10
+
+		getPositionFromIndexInArray = function(indx){
+			y = indx / widthSegments
+			x = Math.ceil(widthSegments * (y - Math.floor(y)))
+			y = Math.floor(y)
+			return {x: x, y: y};
+		}
+
+		for (var i = grid.length - 1; i >= 0; i--) {
+			console.log(getPositionFromIndexInArray(grid[i]))
+		}
+
+	</script>
+
+</body>
+</html>

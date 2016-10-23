@@ -1,0 +1,122 @@
+.object-aside {
+	position: absolute;
+	@include gradient(rgba(235,235,235,.98), rgba(245,245,245,.7));
+	top: 24px; left: auto; right:0; height: 100%; width: $right-aside-width;
+	/*border-right: 1px solid rgba(255,255,255,.5);*/
+	box-shadow: 0 0 50px rgba(0,0,0,.2);
+	transform: translateX(100%) translateZ(0);
+	color: #333;
+	z-index: 3;
+
+	.toggle-aside {
+		left: auto; right: 100%;
+		border-radius: 5px 0 0 5px;
+		.icon {
+			transform: rotate(-180deg);
+		}
+	}
+	&.active {
+		transform: translateX(0)  translateZ(0);
+		.toggle-aside {
+			.icon {
+				transform: rotate(0deg);
+			}
+		}
+	}
+	header {
+		position: absolute;
+		top: 0; left: 0; right: 0;
+		height: 50px;
+		padding: 6px 25px;
+		background: $header;
+		z-index: 2;
+	}
+	.separator {
+		position: absolute;
+		z-index: 3;
+		margin-top: -10px;
+		background: rgba(0,0,0,.2);
+		cursor: pointer;
+		color: #fff;
+		font-size: 19px;
+		width: 100%;
+		text-align: center;
+		transition: .1s;
+		height: 20px; line-height: 20px;
+		button {
+			display: inline-block;
+			line-height: 20px;
+			border: none;
+			width: 40px; height: 20px;
+			color: inherit;
+			transition: .1s;
+			cursor: pointer;
+			font-size: 20px;
+			background: rgba(0,0,0,.1);
+			&:hover {
+				background: rgba(0,0,0,.2);
+			}
+			&:active {
+				background: rgba(0,0,0,.2);
+			}
+		}
+		&:hover {
+			background: rgba(0,0,0,.3);
+		}
+		&:active {
+			transition: none;
+			cursor: move;
+		}
+	}
+	.scene, .body {
+		position: absolute;
+		top: 0%; left: 0; right: 0; bottom: 60%;
+		overflow: auto;
+		z-index: 1;
+		padding: 10px 15px;
+		margin-bottom: 10px;
+		&::-webkit-scrollbar {
+			width: 6px;
+		}
+		&::-webkit-scrollbar-track {
+			border-radius: 10px;
+			/*background: #ddd;*/
+		}
+		&::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			background: $grey;
+		}
+	}
+	.body {
+		top: 40%; bottom: 0;
+		margin-top: 10px;
+		margin-bottom: 0;
+		padding: 10px 0;
+	}
+	.slider-captions {
+		>* {
+			cursor: pointer;
+			transition: .1s;
+			&:hover {
+				color: #444;
+			}
+		}
+	}
+	.scene {
+		ul {
+			li {
+				.name {
+					float: left;
+					width: 70%;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+				.buttons {
+					float: right;
+					width: 30%;
+				}
+			}
+		}
+	}
+}

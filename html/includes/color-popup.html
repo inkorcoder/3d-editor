@@ -1,0 +1,55 @@
+<div class="popup" id="color-popup" v-bind:class="{'active': isActive}">
+	<div class="inner">
+		<div class="clearfix">
+			<div class="col-8">
+				<div class="row">
+					<div class="col-10 collapsed relative">
+						<canvas class="color-canvas" id="colorPalette" width="200" height="200" v-on:mousedown="enablePointer" v-on:mouseup="disablePointer" v-on:mouseover="disablePointer" v-on:mousemove="setPosition" v-on:click="setPosition($event,true)"></canvas>
+						<div class="pointer"></div>
+					</div>
+					<div class="col-2 relative">
+						<input type="range" class="range vertical" min="0" max="255" step="1" value="255" v-model="brightness" v-on:input="setBrightness"/>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<button class="btn btn-block btn-primary" v-on:click="confirmColor">Ok</button>
+				<span class="space"></span>
+				<button class="btn btn-block" v-on:click="closePopup">Close</button>
+				<span class="space"></span>
+				<div class="row">
+					<div class="col-6">Red
+					</div>
+					<div class="col-6">
+						<input type="text" class="input" v-model="color.r" readonly>
+					</div>
+				</div>
+				<span class="space"></span>
+				<div class="row">
+					<div class="col-6">Green
+					</div>
+					<div class="col-6">
+						<input type="text" class="input" v-model="color.g" readonly>
+					</div>
+				</div>
+				<span class="space"></span>
+				<div class="row">
+					<div class="col-6">Blue
+					</div>
+					<div class="col-6">
+						<input type="text" class="input" v-model="color.b" readonly>
+					</div>
+				</div>
+				<span class="space"></span>
+				<div class="row">
+					<div class="col-4">HEX</div>
+					<div class="col-8">
+						<input type="text" class="input" v-model="color.hex" readonly>
+					</div>
+				</div>
+				<span class="space"></span>
+				<div class="color"></div>
+			</div>
+		</div>
+	</div>
+</div>

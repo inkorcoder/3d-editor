@@ -1,0 +1,55 @@
+.radio {
+	position: relative;
+	padding: 2px 0;
+	input {
+		position: absolute;
+		top: 0; left: 0;
+		z-index: -1;
+		transform: scale(0);
+
+		&:checked ~ label:after {
+			transform: scale(1);
+		}
+		&:focus ~ label:before {
+			box-shadow: 0 0 0 3px transparentize($primary, .5) !important;
+		}
+
+	}
+
+	label {
+		position: relative;
+		display: inline-block;
+		cursor: pointer;
+		&:before {
+			content: '';
+			display: block;
+			position: absolute;
+			top: 0; left: 0;
+			width: calc(100% - 2px);
+			margin: 1px;
+			background: #fff;
+			font-family: "Roboto";
+			height: $h; width: $h;
+			border-radius: 50%;
+			border: none;
+			padding: 0;
+			transition: .1s;
+			box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+		}
+		&:after {
+			content: '';
+			display: block;
+			position: absolute;
+			top: 6px; left: 6px;
+			width: 10px; height: 10px;
+			background: #333;
+			border-radius: 50%;
+			transform: scale(0);
+			z-index: 2;
+			transition: .2s cubic-bezier(.47,.08,.42,1.52);
+		}
+		&:hover:before {
+			box-shadow: 0 1px 2px 1px rgba(0,0,0,.2);
+		}
+	}
+}

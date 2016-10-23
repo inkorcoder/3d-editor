@@ -1,0 +1,126 @@
+.main-aside {
+	position: absolute;
+	@include gradient(rgba(255,255,255,.9), rgba(255,255,255,.8));
+	top: 24px; left: 0; height: 100%; width: $left-aside-width;
+	/*border-right: 1px solid rgba(255,255,255,.5);*/
+	box-shadow: 0 0 50px rgba(0,0,0,.2);
+	transform: translateX(-100%);
+	z-index: 3;
+	&.active {
+		transform: translateX(0);
+	}
+	.header {
+		/* background: $header; */
+		/*border-bottom: 1px solid rgba(0,0,0,.1);*/
+		position: absolute;
+		top: 0; left: 0; right: 0; height: 50px;
+		z-index: 2;
+		padding: 10px 20px;
+		.input {
+			height: 26px;
+			border-radius: 6px;
+			padding-left: 30px;
+			line-height: 26px;
+			font-size: 15px;
+			font-weight: 400;
+			background-position: 10px 50%;
+			box-shadow: none;
+			box-shadow: 0 1px 1px 0 rgba(0,0,0,.05);
+			&:hover {
+				box-shadow: 0 1px 3px 0 rgba(0,0,0,.1);
+			}
+			&:focus {
+				box-shadow: 0 0 0 3px transparentize($primary, .5);
+			}
+		}
+		.clear-input {
+			width: 30px;
+			height: 26px;
+			line-height: 30px;
+			font-size: 18px;
+			font-weight: 100;
+		}
+		.tabs-list {
+			position: absolute;
+			top: 100%; margin-top: 10px;
+			left: 0; width: 100%;
+		}
+	}
+	.filter {
+		position: absolute;
+		top: 50px; left: 0; right: 0;
+		/*background: rgba(0,0,0,.04);*/
+		padding: 7px;
+		*[class*="col"] {
+			padding: 0 5px;
+		}
+	}
+	footer {
+		position: absolute;
+		top: auto; left: 0; right: 0;
+		bottom: 0;
+		padding: 5px 15px;
+		font-size: 11px;
+		color: #777;
+	}
+	.list {
+		position: absolute;
+		top: 93px; left: 0; right: 0; bottom: 30px;
+		overflow: auto;
+		font-size: 14px;
+		&::-webkit-scrollbar {
+			width: 6px;
+		}
+		&::-webkit-scrollbar-track {
+			border-radius: 10px;
+			/*background: #ddd;*/
+		}
+		&::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			background: $grey;
+		}
+
+	}
+	ul {
+		/*padding: 2px 0;*/
+		&:nth-child(odd){
+			background: rgba(0,0,0,.03);
+		}
+		.anchor {
+			padding: 3px 15px 1px;
+			font-size: 16px;
+			line-height: 20px;
+			color: #333;
+			&:before {
+				content: '►' !important;
+				display: inline-block;
+				transition: .1s;
+				font-size: 16px;
+				margin-right: 6px;
+			}
+			.icon {
+				color: $primary;
+				font-size: 20px;
+				vertical-align: middle;
+				position: relative;
+				margin-right: 8px;
+				bottom: 2px;
+			}
+			&:hover {
+				background: $primary;
+				color: #fff;
+				.icon {
+					color: #fff;
+				}
+			}
+		}
+		&.active .anchor {
+			&:before {
+				transform: rotate(90deg);
+			}
+		}
+	}
+	.toggle-aside {
+		border-radius: 0 5px 5px 0;
+	}
+}

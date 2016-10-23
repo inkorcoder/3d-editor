@@ -1,0 +1,61 @@
+<div class="popup small" id="terrain-add-popup" v-bind:class="{'active': isActive}">
+	<div class="inner">
+
+<!-- 		<div class="clearfix">
+			<label for="newTerrainName">Name</label>
+			<input id="newTerrainName" type="text" class="input" placeholder="Type name...">
+		</div> -->
+		<span class="space"></span>
+		<div class="row">
+			<div class="col-4">
+				<label for="newTerrainWidth">Width</label>
+				<div class="relative">
+					<input id="newTerrainWidth" class="input number" v-model="terrain.width" placeholder="20" value="20">
+					<div class="calc">
+						<button type="button" class="plus"><i class="icon icon-arrow_drop_up"></i></button>
+						<button type="button" class="minus"><i class="icon icon-arrow_drop_down"></i></button>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<label for="newTerrainLength">Length</label>
+				<div class="relative">
+					<input id="newTerrainLength" class="input number"  v-model="terrain.height" placeholder="20" value="20">
+					<div class="calc">
+						<button type="button" class="plus"><i class="icon icon-arrow_drop_up"></i></button>
+						<button type="button" class="minus"><i class="icon icon-arrow_drop_down"></i></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<span class="space"></span>
+		<div class="row">
+			<div class="col-6">
+				<label for="newTerrainWidthSegments">Width Segments</label>
+				<div class="relative">
+					<input id="newTerrainWidthSegments" type="number" class="input number"  v-model="terrain.widthSegments" placeholder="10" value="10">
+					<div class="calc">
+						<button type="button" class="plus"><i class="icon icon-arrow_drop_up"></i></button>
+						<button type="button" class="minus"><i class="icon icon-arrow_drop_down"></i></button>
+					</div>
+				</div>
+			</div>
+			<div class="col-6">
+				<label for="newTerrainLengthSegments">Length Segments</label>
+				<div class="relative">
+					<input id="newTerrainLengthSegments" type="number" class="input number"  v-model="terrain.heightSegments" placeholder="10" value="10">
+					<div class="calc">
+						<button type="button" class="plus"><i class="icon icon-arrow_drop_up"></i></button>
+						<button type="button" class="minus"><i class="icon icon-arrow_drop_down"></i></button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="footer clearfix right">
+			<button type="button" class="btn btn-primary" v-on:click="addTerrain">Add</button>
+			<button type="button" class="btn" v-on:click="closePopup">Cancel</button>
+		</div>
+
+	</div>
+</div>

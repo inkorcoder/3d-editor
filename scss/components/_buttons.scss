@@ -1,0 +1,38 @@
+.btn {
+	display: inline-block;
+	font-weight: 500;
+	padding: 0 8px;
+	line-height: $h;
+	height: $h;
+	display: inline-block;
+	font-family: $font;
+	border-radius: 5px;
+	font-size: 15px;
+	line-height: 17px;
+	font-weight: 400;
+	transition: .1s;
+	background: #fff;
+	text-align: center;
+	box-shadow: $shadow;
+	cursor: pointer;
+	border: none;
+	&:hover {
+		background: #eee;
+	}
+	&:active {
+		transition: 0s;
+		background: #ddd;
+	}
+}
+.btn.btn-block {
+	display: block;
+	width: 100%;
+}
+.btn.btn-primary {
+	box-shadow: none;
+	color: #fff;
+	background: linear-gradient(0deg, $darken 0%, $lighten 100%);
+	&:hover {
+		background: linear-gradient(0deg, darken($darken,10) 0%, darken($lighten,10) 100%);
+	}
+}
