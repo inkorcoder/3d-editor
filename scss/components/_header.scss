@@ -2,20 +2,13 @@
 	position: absolute;
 	top: 0;
 	display: block;
-	background: $header;
+	background: $bg-sub;
 	left: 0; right: 0;
 	z-index: 5;
 	transition: .2s;
-	height: 24px;
+	height: $h;
 	padding: 0 10px;
-	border-bottom: 1px solid rgba(0,0,0,.15);
-/*	&.left-side-active {
-		left: $left-aside-width;
-		padding-left: 0;
-	}
-	&.right-side-active {
-		right: $right-aside-width;
-	}*/
+	/*border-bottom: 1px solid rgba(0,0,0,.15);*/
 	.sep {
 		display: inline-block;
 		width: 10px;
@@ -32,32 +25,32 @@
 		/*width: $menu;*/
 		> ul {
 			display: block;
-			font-size: 15px;
+			font-size: $fontSize;
 
 			> li {
 				display: inline-block;
 				position: relative;
-				transition: .2s;
+				transition: $transition;
 
 				> a {
 					display: block;
-					line-height: 24px;
+					line-height: $line;
 					font-weight: 400;
-					padding: 0 15px;
+					padding: 0 $gutter;
 					text-decoration: none;
-					color: #000;
+					color: $links;
 				}
 				> ul {
 					position: absolute;
-					background: rgba(240,240,240,.95);
-					padding: 10px 0;
-					box-shadow: 0 2px 5px rgba(0,0,0,.3);
-					border-radius: 0 0 5px 5px;
+					background: darken($bg-sub, 10);
+					padding: $gutter 0;
+					/*box-shadow: 0 2px 5px rgba(0,0,0,.3);*/
+					border-radius: 0 0 $border $border;
 					overflow: hidden;
 					white-space: nowrap;
 					display: none;
-					font-size: 15px;
-					min-width: 250px;
+					font-size: $fontSize;
+					min-width: $dropdownWidth;
 
 					li {
 						display: block;
@@ -65,28 +58,28 @@
 
 						&.separator {
 							height: 1px;
-							margin: 3px 0;
-							background: rgba(0,0,0,.1);
+							margin: $gutter 0;
+							background: $bg;
 						}
 					}
 					.help {
 						position: absolute;
-						right: 15px; top: 3px;
+						right: 15px; top: 0;
 					}
 					a {
 						display: block;
 						text-decoration: none;
-						color: #000;
-						padding: 2px 100px 2px 30px;
+						color: $links;
+						padding: 0 80px 0 30px;
 						.icon {
 							position: absolute;
 							left: 10px; top: 3px;
-							line-height: 20px;
+							line-height: $line;
 							display: none;
 						}
 						&:hover {
 							color: #fff;
-							background: $darken;
+							background: $bg-sub;
 						}
 						&.active {
 							.icon {
@@ -96,7 +89,7 @@
 					}
 				}
 				&:hover {
-					background: rgba(0,0,0,.1);
+					background: darken($bg-sub, 10);
 					ul {
 						display: block;
 					}

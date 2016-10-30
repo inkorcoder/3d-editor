@@ -15,7 +15,7 @@
 
 	<!-- objects -->
 	<div v-if="instrument === 'objects'" class="filter">
-		<div class="row spaced">
+		<div class="row spaced-horizontal">
 			<div class="col-6">
 				<button type="button" v-on:click="showAllLists" class="btn btn-block">Show all</button>
 			</div>
@@ -26,8 +26,15 @@
 	</div>
 	<div v-if="instrument === 'objects'" class="list">
 		<ul class="clear-list" v-bind:class="{'active': lists[folder.name]}" v-for="folder in data | orderBy 'name'">
-			<li class="anchor" v-on:click="toggleList(folder.name)"><i class="icon icon-folder"></i> {{folder.name}}</li>
-			<li v-for="object in folder.files | filterBy searchModel" v-if="lists[folder.name]" onclick="addToArea('{{object}}')">{{ object }}</li>
+			<li class="anchor" v-on:click="toggleList(folder.name)">
+				<span><i class="icon icon-folder"></i> {{folder.name}}</span>
+			</li>
+			<li v-for="object in folder.files | filterBy searchModel" v-if="lists[folder.name]" onclick="addToArea('{{object}}')">
+				<figure>
+					<img v-bind:src="'files/'+object+'/img.png'" alt="">
+					<figcaption>{{ object.split('/')[1] }}</figcaption>
+				</figure>
+			</li>
 		</ul>
 	</div>
 	<footer v-if="instrument === 'objects'">
@@ -39,18 +46,18 @@
 
 	<!-- terrain -->
 	<div v-if="instrument === 'terrain'" class="filter">
-		<div class="clearfix spaced">
-			<div class="col-6"><button type="button" class="btn btn-primary btn-block" v-on:click="showTerrainPopup">Add new</button></div>
+		<div class="row spaced-horizontal">
+			<div class="col-6"><button type="button" class="btn btn-primary btn-block" v-on:click="showTerrainPopup">Add</button></div>
 			<div class="col-6"><button type="button" class="btn btn-block" v-on:click="terrain.remove()">Remove</button></div>
 		</div>
 	</div>
 	<div v-if="instrument === 'terrain'" class="list">
-		<div class="clearfix spaced">
+		<div class="row spaced">
 			<div class="col-12">
-				<h3>Terrain properties</h3>
+				<h3 class="title"><span>Terrain properties</span></h3>
 			</div>
 		</div>
-		<div class="clearfix spaced">
+		<div class="row spaced-horizontal">
 			<div class="col-12">
 				<div class="checkbox">
 					<input type="checkbox" name="" id="terrainWireframe" v-on:change="setWireframe">
@@ -58,16 +65,15 @@
 				</div>
 			</div>
 		</div>
-		<div class="clearfix spaced">
+		<div class="row spaced">
 			<div class="col-12">
 				<label for="terrainColor">Color</label>
 				<input id="terrainColor" type="text" class="input"  v-on:focus="setColorPopupCaller" v-on:change="setTerrainColor" value="{{ terrain.color }}">
 			</div>
 		</div>
-		<span class="space"></span>
-		<div class="clearfix spaced">
+		<div class="row spaced-horizontal">
 			<div class="col-12">
-				<h3>Brush</h3>
+				<h3 class="title"><span>Brush</span></h3>
 				<span class="space"></span>
 				<ul class="clear-list tabs-list table">
 					<li v-on:click="setActiveBrushTab('height')" v-bind:class="{'active' : brushTabs.height}">Height</li>
@@ -76,7 +82,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="clearfix spaced" v-if="brushTabs.height">
+		<div class="row spaced" v-if="brushTabs.height">
 			<div class="col-12"><label for="terrainWeight">Weight</label></div>
 			<div class="col-9">
 				<input type="range" id="terrainWeight" class="range" min="0.1" max="10" step="0.1" value="1" v-model="terrain.weight">
@@ -89,13 +95,7 @@
 				<input type="text" class="input" value="{{ terrain.weight }}"  v-model="terrain.weight">
 			</div>
 		</div>
-		<div class="clearfix spaced" v-if="brushTabs.color">
-			<div class="col-12">
-				<label for="terrainBrushColor">Color</label>
-				<input id="terrainBrushColor" type="text" class="input"  v-on:focus="setColorPopupCaller" v-model="terrain.brushColor">
-			</div>
-		</div>
-		<div class="clearfix spaced" v-if="brushTabs.color || brushTabs.plaining">
+		<div class="row spaced" v-if="brushTabs.color || brushTabs.plaining">
 			<div class="col-12"><label for="terrainBrushSize">Brush size</label></div>
 			<div class="col-9">
 				<input type="range" id="terrainBrushSize" class="range" min="1" max="10" step="1" value="5" v-model="terrain.brushSize">
@@ -106,6 +106,12 @@
 			</div>
 			<div class="col-3">
 				<input type="text" class="input" value="{{ terrain.brushSize }}"  v-model="terrain.brushSize" maxlength="2">
+			</div>
+		</div>
+		<div class="row spaced-horizontal" v-if="brushTabs.color">
+			<div class="col-12">
+				<label for="terrainBrushColor">Color</label>
+				<input id="terrainBrushColor" type="text" class="input"  v-on:focus="setColorPopupCaller" v-model="terrain.brushColor">
 			</div>
 		</div>
 	</div><!-- terrain -->

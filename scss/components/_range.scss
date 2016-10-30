@@ -1,6 +1,6 @@
 .range {
   -webkit-appearance: none;
-  margin: 4px 0;
+  margin: 0 0;
   width: 100%;
   background: transparent;
 }
@@ -9,41 +9,49 @@
 }
 .range::-webkit-slider-runnable-track {
   width: 100%;
-  height: 6px;
-  cursor: pointer;
-  /*background: #ccc;*/
-  background: $primary;
-  border-radius: 10px;
-  /*box-shadow: inset 0 -1px 1px 0 rgba(0,0,0,.1);*/
+  margin-top: -$gutter;
+  height: $rangeSize;
+  cursor: default;
+  position: relative;
+  background: $bg-sub;
+  border-radius: $border;
 }
 .range::-webkit-slider-thumb {
   -webkit-appearance: none;
-  cursor: pointer;
-  width: 16px; height: 16px;
-  margin-top: -5px;
+  cursor: default;
+  width: $checkboxHeight;
+  height: $checkboxHeight;
   /*background: $primary;*/
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,.4);
+  background: $bg-sub;
+  top: 50%; position: absolute;
   border-radius: 50%;
+  margin-top: -$checkboxHeight/2;
+  box-shadow: inset 0 0 0 1px transparentize($primary, .5);
+
+  &:hover {
+    background: lighten($bg-sub, 5);
+  }
+  &:active {
+    background: linear-gradient(0deg, $darken 0%, $primary 100%);
+  }
 }
 .slider-captions {
-  font-size: 10px;
-  font-weight: 500;
+  font-size: $rangeCaptions;
+  line-height: 1;
+  font-weight: 400;
+  padding-top: $gutter/2;
   color: $grey;
 }
 .range-name {
   font-weight: bold;
-  line-height: 24px;
+  line-height: 1;
 }
 .range.vertical {
-  transform: translateY(-15px) rotate(270deg);
+  transform: translateY(0) rotate(270deg);
   width: 200px;
   position: absolute;
   top: 0; right: 50%;
   transform-origin: bottom right;
-  &::-webkit-slider-thumb {
-    box-shadow: -1px 0 3px rgba(0,0,0,.4);
-  }
 }
 /*.range:focus::-webkit-slider-runnable-track {
   background: #367ebd;

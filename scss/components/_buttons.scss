@@ -1,23 +1,24 @@
 .btn {
 	display: inline-block;
 	font-weight: 500;
-	padding: 0 8px;
 	line-height: $h;
 	height: $h;
 	display: inline-block;
 	font-family: $font;
-	border-radius: 5px;
-	font-size: 15px;
-	line-height: 17px;
-	font-weight: 400;
-	transition: .1s;
-	background: #fff;
+	border-radius: $border;
+	line-height: $line;
+	font-weight: 600;
+	text-transform: uppercase;
+	transition: $transition;
+	background: $bg-sub;
 	text-align: center;
-	box-shadow: $shadow;
-	cursor: pointer;
+	color: $text;
+	cursor: default;
 	border: none;
+	padding: 0 $gutter;
+	font-size: #{$fontSize - 1px};
 	&:hover {
-		background: #eee;
+		background: lighten($bg-sub, 5);
 	}
 	&:active {
 		transition: 0s;
@@ -30,9 +31,23 @@
 }
 .btn.btn-primary {
 	box-shadow: none;
-	color: #fff;
-	background: linear-gradient(0deg, $darken 0%, $lighten 100%);
+	color: $links;
+	background: linear-gradient(0deg, $darken 0%, $primary 100%);
 	&:hover {
-		background: linear-gradient(0deg, darken($darken,10) 0%, darken($lighten,10) 100%);
+		background: linear-gradient(0deg, lighten($darken,10) 0%, lighten($lighten,10) 100%);
 	}
+	&:active {
+		transition: 0s;
+		background: linear-gradient(0deg, lighten($darken,20) 0%, lighten($lighten,20) 100%);
+	}
+}
+.btn.btn-small {
+	padding: 0;
+	line-height: $h - 4px;
+	height: $h - 4px;
+	padding: 0 $gutter/2;
+}
+.btn.btn-faded {
+	background: transparentize($bg-sub, .5);
+	color: transparentize($text, .8);
 }

@@ -6,6 +6,7 @@
 	opacity: 0;
 	overflow: auto;
 	pointer-events: none;
+	color: $text;
 	text-align: center;
 	white-space: nowrap;
 	transform: scale(.9,.8);
@@ -25,14 +26,14 @@
 		display: inline-block;
 		vertical-align: middle;
 		pointer-events: auto;
-		line-height: 24px;
-		border-radius: 5px;
-		background: #f0f0f0;
+		line-height: $line;
+		border-radius: $border;
+		background: $bg;
 		pointer-events: none;
 		cursor: default;
-		width: 450px;
+		width: 410px;
 		box-shadow: 0 10px 50px 20px rgba(0,0,0,.4);
-		padding: 30px;
+		padding: #{$gutter*4};
 	}
 	.pointer {
 		position: absolute;
@@ -52,7 +53,7 @@
 		padding: 10px 30px;
 	}
 	.footer {
-		margin-top: 20px;
+		margin-top: #{$gutter*2};
 	}
 	.color {
 		position: static;
@@ -60,7 +61,7 @@
 		background: #ddd;
 	}
 	&.small .inner {
-		width: 350px;
+		width: #{$left-aside-width*1.5};
 	}
 	&.active {
 		opacity: 1;

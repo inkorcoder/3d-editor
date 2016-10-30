@@ -3,11 +3,11 @@
 		<div class="clearfix">
 			<div class="col-8">
 				<div class="row">
-					<div class="col-10 collapsed relative">
+					<div class="col-11 collapsed relative">
 						<canvas class="color-canvas" id="colorPalette" width="200" height="200" v-on:mousedown="enablePointer" v-on:mouseup="disablePointer" v-on:mouseover="disablePointer" v-on:mousemove="setPosition" v-on:click="setPosition($event,true)"></canvas>
 						<div class="pointer"></div>
 					</div>
-					<div class="col-2 relative">
+					<div class="col-1 relative">
 						<input type="range" class="range vertical" min="0" max="255" step="1" value="255" v-model="brightness" v-on:input="setBrightness"/>
 					</div>
 				</div>

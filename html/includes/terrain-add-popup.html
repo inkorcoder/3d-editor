@@ -5,7 +5,6 @@
 			<label for="newTerrainName">Name</label>
 			<input id="newTerrainName" type="text" class="input" placeholder="Type name...">
 		</div> -->
-		<span class="space"></span>
 		<div class="row">
 			<div class="col-4">
 				<label for="newTerrainWidth">Width</label>
@@ -33,7 +32,7 @@
 			<div class="col-6">
 				<label for="newTerrainWidthSegments">Width Segments</label>
 				<div class="relative">
-					<input id="newTerrainWidthSegments" type="number" class="input number"  v-model="terrain.widthSegments" placeholder="10" value="10">
+					<input id="newTerrainWidthSegments" type="text" class="input number"  v-model="terrain.widthSegments" placeholder="10" value="10">
 					<div class="calc">
 						<button type="button" class="plus"><i class="icon icon-arrow_drop_up"></i></button>
 						<button type="button" class="minus"><i class="icon icon-arrow_drop_down"></i></button>
@@ -43,7 +42,7 @@
 			<div class="col-6">
 				<label for="newTerrainLengthSegments">Length Segments</label>
 				<div class="relative">
-					<input id="newTerrainLengthSegments" type="number" class="input number"  v-model="terrain.heightSegments" placeholder="10" value="10">
+					<input id="newTerrainLengthSegments" type="text" class="input number"  v-model="terrain.heightSegments" placeholder="10" value="10">
 					<div class="calc">
 						<button type="button" class="plus"><i class="icon icon-arrow_drop_up"></i></button>
 						<button type="button" class="minus"><i class="icon icon-arrow_drop_down"></i></button>

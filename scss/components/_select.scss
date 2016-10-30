@@ -1,19 +1,19 @@
 .select {
 	position: relative;
 	z-index: 4;
+	height: $h;
 	input {
 		display: block;
 		width: calc(100% - 2px); height: $h;
-		border-radius: 4px;
+		border-radius: $border;
 		position: relative;
 		z-index: 3;
-		font-size: 14px;
+		font-size: $fontSize;
 		user-select: none;
 		/*box-shadow: none;*/
 		border: none;
-		border-bottom: 1px solid transparent;
 		/*border-radius: 0;*/
-		padding-left: 10px;
+		padding-left: $gutter/2;
 		/*background: transparent;*/
 	}
 	.icon {
@@ -22,9 +22,9 @@
 		display: block;
 		position: absolute;
 		top: 0; right: -1px;
-		border-radius: 0 4px 4px 0;
+		border-radius: 0 $border $border 0;
 		z-index: 3;
-		transition: .1s;
+		transition: $transition;
 		line-height: $h;
 		text-align: center;
 		font-size: 18px;
@@ -33,7 +33,7 @@
 	input:focus {
 		box-shadow: none;
 		border-radius: 4px 4px 0 0;
-		background: transparent;
+		transition-delay: 0s;
 		& ~ ul {
 			transform: scale(1,1);
 			opacity: 1;
@@ -46,38 +46,36 @@
 	ul {
 		user-select: none;
 		position: absolute;
-		transition: .2s;
+		transition: $transition;
+		transition-delay: .01s;
 		z-index: 2;
 		transform-origin: top;
 		opacity: 0;
 		transform: scale(.9, .1);
-		font-size: 14px;
-		top: -5px; left: -10px; right: -10px;
-		padding-top: 34px;
-		padding-bottom: 5px;
+		font-size: $fontSize;
+		top: 0; left: 0; right: 0;
+		padding-top: $h;
 		overflow: hidden;
-		background: #fff;
-		border: 1px solid #ccc;
-		border-radius: 6px;
-		box-shadow: 0 2px 3px 1px rgba(0,0,0,.1);
+		background: $bg-sub;
+		border-radius: $border;
 		&:before {
 			content: '';
 			display: block;
 			width: 100%; height: 1px;
-			background: rgba(0,0,0,.1);
+			background: $bg;
 			position: absolute;
-			top: 30px; left: 0;
+			top: $h; left: 0;
 		}
 		li {
-			padding: 2px 10px 2px 20px;
+			padding: $gutter/4 $gutter $gutter/4 $gutter*2;
 			cursor: default;
 			position: relative;
 			.icon {
 				left: 0; right: 100%;
 				background: transparent;
 				opacity: 0;
+				font-size: $fontSize;
 				transition: none;
-				color: #444;
 			}
 			&:hover:not(.active) {
 				color: #fff;

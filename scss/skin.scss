@@ -1,20 +1,48 @@
 @import '_defaults.scss';
 
-$primary: #3F94FE;
-$darken: darken($primary, 10);
-$lighten: lighten($primary, 10);
+$primary: #555;
+$bg: #222;
+$bg-sub: #333;
+$links: #ddd;
+$text: #999;
+$fontSize: 12px;
+$darken: darken($primary, 5);
+$lighten: lighten($primary, 5);
 $grey: #999;
-$left-aside-width: 260px;
-$right-aside-width: 260px;
-$font: "Source";
-$h: 22px;
+$left-aside-width: 200px;
+$right-aside-width: 200px;
+$font: "Roboto";
+$h: 20px;
 $menu: 400px;
-$gutter: 10px;
+$gutter: 8px;
 $header: #fff;
+$border: 1px;
+$asideHeaderHeight: 50px;
+$titleSize: 13px;
+$subtitleSize: 10px;
+$line: 18px;
+$dropdownWidth: 200px;
+$transition: 0.001s;
+$checkboxHeight: 16px;
+$rangeSize: 4px;
+$rangeCaptions: 10px;
 $shadow: 0 -1px 0 rgba(0,0,0,.05),
 							0 1px 2px rgba(0,0,0,.1),
 							-1px 0 0 rgba(0,0,0,.07),
 							1px 0 0 rgba(0,0,0,.07);
+@mixin scrollbar {
+	&::-webkit-scrollbar {
+		width: 6px;
+	}
+	&::-webkit-scrollbar-track {
+		border-radius: $border;
+		background: $bg-sub;
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: $border;
+		background: $primary;
+	}
+}
 
 * {
 	padding: 0px;
@@ -35,16 +63,16 @@ $shadow: 0 -1px 0 rgba(0,0,0,.05),
 html, body {
 	width: 100%;
 	height: 100%;
-	font-family: $font;
-	line-height: 20px;
-	font-size: 13px;
+	font-family: 'Roboto';
+	line-height: $line;
+	font-size: 12px;
 	cursor: default;
 	font-weight: 400;
 	user-select: none;
 /*	font-smooth: always;
 	font-smooth: 2em;*/
 	/*background: #8F65A6;*/
-	@include gradient(#000, #ccc);
+	@include gradient(#000, #222);
 	/*background: url(../img/bg.jpg) no-repeat left;*/
 	background-size: cover;
 	overflow: hidden;
@@ -57,7 +85,7 @@ html, body {
 }
 label {
 	display: inline-block;
-	font-weight: 500;
+	color: $links;
 }
 .clearfix:after,
 .row:after {
@@ -66,21 +94,27 @@ label {
 	clear: both;
 }
 .row {
-	margin: 0 -10px;
+	margin: 0 #{-$gutter/2};
 }
 .spaced {
-	padding: 5px 10px;
+	padding: $gutter $gutter;
+}
+.spaced-vertical {
+	padding: $gutter 0;
+}
+.spaced-horizontal {
+	padding: 0 $gutter;
 }
 hr {
-	background: rgba(0,0,0,.1);
+	background: $bg-sub;
 	display: block;
 	height: 1px;
 	border: none;
-	margin: 10px 0;
+	margin: $gutter 0;
 }
 *[class*="col-"] {
 	float: left;
-	padding: 0 10px;
+	padding: 0 #{$gutter/2};
 	&.collapsed {
 		padding-left: 0;
 		padding-right: 0;
@@ -149,35 +183,51 @@ aside {
 }
 
 .island {
-	padding: 10px;
+	padding: $gutter;
 }
 
 .title {
 	margin: 0;
-	font-size: 14px;
+	font-size: $titleSize;
 	font-weight: 500;
-	line-height: 1.2;
-	padding: 3px 0;
-	color: #555;
-	text-align: center;
+	line-height: 1;
+	padding: 0;
+	color: $text;
+	position: relative;
+
+	span {
+		background: $bg;
+		position: relative;
+		z-index: 2;
+		padding-right: $gutter;
+	}
+	&:after {
+		content: '';
+		display: block;
+		width: 100%; height: 1px;
+		position: absolute;
+		top: 50%; left: 0;
+		background: $bg-sub;
+	}
 }
 
 
 @import 'components/_main-aside.scss';
 @import 'components/_object-aside.scss';
+@import 'components/_tabs.scss';
 
 h2 {
 	font-size: 12px;
 	font-weight: bold;
 	white-space: nowrap;
 	overflow: hidden;
-	color: #444;
+	color: $text;
 	text-overflow: ellipsis;
 }
 h3 {
-	font-size: 17px;
+	font-size: $titleSize;
 	font-weight: 500;
-	color: #333;
+	color: $text;
 	margin: 0;
 }
 h4 {
@@ -185,54 +235,6 @@ h4 {
 	font-weight: 500;
 }
 
-.tabs-list {
-	display: block;
-	width: 100%;
-	text-align: center;
-	white-space: nowrap;
-	font-size: 0;
-	user-select: none;
-	li {
-		font-weight: 500;
-		padding: 2px 8px;
-		display: inline-block;
-		font-size: 13px;
-		transition: .1s;
-		background: #fff;
-		text-align: center;
-		box-shadow: 0 -1px 0 rgba(0,0,0,.05),
-								0 1px 0 rgba(0,0,0,.2);
-		cursor: default;
-		&:first-child {
-			border-radius: 4px 0 0 4px;
-			box-shadow: 0 -1px 0 rgba(0,0,0,.05),
-									0 1px 0 rgba(0,0,0,.2),
-									-1px 0 0 rgba(0,0,0,.1);
-		}
-		&:last-child {
-			border-radius: 0 4px 4px 0;
-			box-shadow: 0 -1px 0 rgba(0,0,0,.05),
-									0 1px 0 rgba(0,0,0,.2),
-									1px 0 0 rgba(0,0,0,.1);
-		}
-		&:hover {
-			background: #e5e5e5;
-		}
-		&.active {
-			color: #fff;
-			background: linear-gradient(0deg, $darken 0%, $lighten 100%);
-		}
-	}
-	&.table {
-		width: 100%;
-		display: table;
-		li {
-			display: table-cell;
-			padding: 2px 0;
-			vertical-align: middle;
-		}
-	}
-}
 .color-canvas {
 	border-radius: 4px;
 	overflow: hidden;
@@ -240,7 +242,7 @@ h4 {
 }
 span.space {
 	display: block;
-	height: 10.5px;
+	height: $gutter;
 }
 
 .hint {

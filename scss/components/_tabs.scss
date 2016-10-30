@@ -1,0 +1,41 @@
+.tabs-list {
+	display: block;
+	width: 100%;
+	text-align: center;
+	white-space: nowrap;
+	font-size: 0;
+	user-select: none;
+
+	li {
+		font-weight: 500;
+		padding: 0 $gutter !important;
+		display: inline-block;
+		width: auto !important;
+		font-size: $fontSize;
+		transition: $transition;
+		background: #fff;
+		text-align: center;
+		line-height: $h;
+		cursor: default;
+		background: $bg-sub;
+
+		&:hover {
+			background: lighten($bg-sub, 5);
+		}
+		&:first-child { border-radius: $border 0 0 $border; }
+		&:last-child { border-radius: 0 $border $border 0; }
+		&.active {
+			color: $links;
+			background: linear-gradient(0deg, $darken 0%, $primary 100%);
+		}
+	}
+	&.table {
+		width: 100%;
+		display: table;
+		li {
+			display: table-cell;
+			padding: 0 $gutter !important;
+			vertical-align: middle;
+		}
+	}
+}

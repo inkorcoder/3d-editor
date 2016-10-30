@@ -9,7 +9,7 @@ mainAside = new Vue(
 		instrument: 'objects'
 		terrain: Terrain
 		data: DATA
-		lists: GlobalUtils.createTriggerObject DATA, on, 'name'
+		lists: GlobalUtils.createTriggerObject DATA, off, 'name'
 		brushTabs: {
 			height: on
 			color: off

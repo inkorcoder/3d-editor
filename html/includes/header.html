@@ -45,8 +45,13 @@
 				</ul>
 			</li>
 			<li>
-				<a href="#">Preferences</a>
+				<a href="#">Theme</a>
+				<ul>
+					<li><a href="#" v-on:click="setTheme('skin')" v-bind:class="{'active' : theme === 'skin'}"><i class="icon icon-check"></i>Default</a></li>
+					<li><a href="#" v-on:click="setTheme('mac')" v-bind:class="{'active' : theme === 'mac'}"><i class="icon icon-check"></i>Mac OS</a></li>
+				</ul>
 			</li>
 		</ul>
 	</menu>
+	<!-- <link rel="stylesheet" href="css/{{theme}}.min.css"> -->
 </header>

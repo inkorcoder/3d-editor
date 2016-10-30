@@ -7,6 +7,7 @@ mainHeader = new Vue(
 		isRight: 				objectAside.isActive
 		isPlaying: 			off
 		tabs: 					{terrain: on, objects: off}
+		theme: 					OPTIONS.theme
 
 	methods:
 
@@ -19,17 +20,21 @@ mainHeader = new Vue(
 			mainHeader.isRight = objectAside.isActive
 
 		toggleAside: ->
-			this.$data.isAsideActive = !this.$data.isAsideActive
+			@$data.isAsideActive = !@$data.isAsideActive
 			return
 
 		togglePlaying: ->
-			this.$data.isPlaying = !this.$data.isPlaying
+			@$data.isPlaying = !@$data.isPlaying
 
 		setActiveTab: (tab)->
-			for property of this.$data.tabs
-				this.$data.tabs[property] = off
-			this.$data.tabs[tab] = on
+			for property of @$data.tabs
+				@$data.tabs[property] = off
+			@$data.tabs[tab] = on
 			mainAside.instrument = tab
+			return
+
+		setTheme: (name)->
+			@$data.theme = name
 			return
 
 	watch:

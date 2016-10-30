@@ -27,6 +27,37 @@ window.DATA = []
 
 if !electron
 	window.DATA = [
-		{name: 'plants', files: ['plants/boletus.json']}
+		{name: 'primitives', files: [
+			'primitives/box'
+			'primitives/circle'
+			'primitives/cone'
+			'primitives/plane'
+			'primitives/ring'
+			'primitives/sphere'
+		]}
+		{name: 'primitives 2', files: [
+			'primitives/box'
+			'primitives/circle'
+			'primitives/cone'
+			'primitives/plane'
+			'primitives/ring'
+			'primitives/sphere'
+		]}
+		{name: 'primitives 3', files: [
+			'primitives/box'
+			'primitives/circle'
+			'primitives/cone'
+			'primitives/plane'
+			'primitives/ring'
+			'primitives/sphere'
+		]}
+		{name: 'primitives 4', files: [
+			'primitives/box'
+			'primitives/circle'
+			'primitives/cone'
+			'primitives/plane'
+			'primitives/ring'
+			'primitives/sphere'
+		]}
 	]
 else DataLoader.load()

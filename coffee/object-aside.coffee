@@ -1,3 +1,9 @@
+Vue.filter 'isEmpty', (objs)->
+	res = []
+	for o in objs
+		if o.name != '' then res.push o
+	res
+
 objectAside = new Vue(
 
 	el: '#object-aside'
@@ -5,16 +11,16 @@ objectAside = new Vue(
 	data:
 		isActive: OPTIONS.rightAside
 		separatorPosition: 40
-		object: obj
-		objectPositionX: obj.position.x
-		objectPositionY: obj.position.y
-		objectPositionZ: obj.position.z
-		objectRotationX: obj.rotation.x
-		objectRotationY: obj.rotation.y
-		objectRotationZ: obj.rotation.z
-		objectScaleX: obj.scale.x
-		objectScaleY: obj.scale.y
-		objectScaleZ: obj.scale.z
+		object: OBJECT
+		objectPositionX: OBJECT.position.x
+		objectPositionY: OBJECT.position.y
+		objectPositionZ: OBJECT.position.z
+		objectRotationX: OBJECT.rotation.x
+		objectRotationY: OBJECT.rotation.y
+		objectRotationZ: OBJECT.rotation.z
+		objectScaleX: OBJECT.scale.x
+		objectScaleY: OBJECT.scale.y
+		objectScaleZ: OBJECT.scale.z
 		objectMaterialType: ''
 		objectMaterialReflectivity: 0.1
 		objectMaterialOpacity: 1
@@ -71,6 +77,12 @@ objectAside = new Vue(
 		separatorDown: ->
 			this.$data.separatorPosition = 100 - (10 / window.innerHeight * 100)
 			return
+
+		setVisible: (obj)->
+			OBJECTER.setVisible obj
+
+		removeItem: (obj)->
+			OBJECTER.remove obj
 
 )
 

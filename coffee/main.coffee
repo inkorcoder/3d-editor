@@ -45,21 +45,43 @@ colorPopup = {}
 mainHeader = {}
 vueRenderer = {}
 OPTIONS =
-	leftAside: on
-	rightAside: off
+	leftAside: off
+	rightAside: on
+	theme: 'skin'
 RENDER =
 	isPlaying: off
 INSTRUMENT = ''
 asideWidth =
-	left: 260
-	right: 260
+	left: 200
+	right: 200
+
+OBJECT = new THREE.Object3D()
 
 LOADER =
 	json: new THREE.JSONLoader()
 
 addToArea = (obj)->
+	object = obj.split('/')[1]
+	switch object
+		when 'box' 				then geo = new THREE.BoxGeometry(1, 1, 1)
+		when 'circle' 		then geo = new THREE.CircleGeometry( 1, 16 )
+		when 'plane' 			then geo = new THREE.PlaneGeometry( 1, 1, 1, 1 )
+		when 'ring' 			then geo = new THREE.RingGeometry( 0.5, 1, 16 )
+		when 'sphere' 		then geo = new THREE.SphereGeometry( 1, 16, 16 )
+		when 'cone' 			then geo = new THREE.ConeGeometry( 1, 2, 16 )
+	m = new THREE.Mesh geo, new THREE.MeshNormalMaterial()
+	switch object
+		when 'box' 				then m.name = 'box'
+		when 'circle' 		then m.name = 'circle'
+		when 'plane' 			then m.name = 'plane'
+		when 'ring' 			then m.name = 'ring'
+		when 'sphere' 		then m.name = 'sphere'
+		when 'cone' 			then m.name = 'cone'
+	OBJECT = m
+	# objectAside.object = m
+	scene.add m
+	return
 	LOADER.json.load 'files/'+obj, (geo, mats)->
-		console.log mats
 		m = new THREE.Mesh geo, new THREE.MeshFaceMaterial mats
 		scene.add m
 
@@ -142,10 +164,10 @@ render = ->
 
 	i++
 
-render();
-console.clear()
-
-obj = cube
+setTimeout ->
+	render()
+, 2000
+# console.clear()
 
 onWindowResize = ( e )->
 	do vueRenderer.setViewport

@@ -1,272 +1,163 @@
-/**************************************************************
+var PATH = '',
+		OPTIONS = {
+			serverHost: 'localhost',
+			serverPort: 1111,
+			serverLivereload: true,
+			coffeeWraping: true,
+			notices: true
+		};
 
-	Gulpfile.js - Gulp.js configuration file with synchronously 
-	called tasks. 
+var gulp = require('gulp'),
+		connect = require('gulp-connect'),
+		coffee = require('gulp-coffee'),
+		clean = require('gulp-clean'),
+		sass = require('gulp-sass'),
+		colors = require('colors'),
+		fileinclude = require('gulp-include'),
+		cssmin = require('gulp-cssmin'),
+		rename = require('gulp-rename'),
+		filelist = require('gulp-filelist'),
+		using = require('gulp-using'),
+		map = require('map-stream'),
+		plumber = require('gulp-plumber'),
+		autoprefixer = require('gulp-autoprefixer'),
+		jsmin = require('gulp-jsmin'),
 
-	-------------------------------------------------------------
+		exec = require("child_process").exec;
 
-	Javascript is synchronous language, so you can have a problem
-	with reloading server after cahnging your files. The problem 
-	is that task is not waiting for compiling all files and run 
-	page with old files. After that you have not see the changes 
-	and must save files again or reload page manually.
-
-	This config fix this problem.
-
-	-------------------------------------------------------------
-
-	IMPORTANT: reloading page can be slower then usual.
-
-	-------------------------------------------------------------
-
-	Packages: gulp, gulp-connect, gulp-coffee, gulp-sass,
-						colors, gulp-include, gulp-cssmin, gulp-rename,
-						gulp-plumber, gulp-autoprefixer, gulp-jsmin
-
-	Installation: "sudo npm i gulp gulp-connect gulp-coffee \
-						gulp-sass colors gulp-include gulp-cssmin \
-						gulp-rename gulp-plumber gulp-autoprefixer \
-						gulp-jsmin"
-
-	-------------------------------------------------------------
-
-	Author: inkor, 2016
-
-**************************************************************/
-
-var PATH = '';
-
-var OPTIONS = {
-	notices: 					true,
-	host: '						localhost',
-	port: 						1111,
-	livereload: 			true,
-	root: 						[PATH+'dist'],
-	coffeeWrapping: 	true,
-	prefixing: 				[
-											'Chrome > 30', 'Firefox > 20',
-											'Explorer > 8', 'Opera > 12',
-											'Edge > 10', 'iOS > 5'
-										]
-};
-
-/*
-		modules
-*//* --------------------------------------------------------*/
-var gulp 					= require('gulp'),
-		// server + livereload
-		connect 			= require('gulp-connect'),
-		// coffeescript
-		coffee 				= require('gulp-coffee'),
-		// sass
-		sass 					= require('gulp-sass'),
-		// colored console log
-		colors 				= require('colors'),
-		// files including
-		fileinclude 	= require('gulp-include'),
-		// css minification
-		cssmin 				= require('gulp-cssmin'),
-		// renaming
-		rename 				= require('gulp-rename'),
-		// prevent gulp crashing after error
-		plumber 			= require('gulp-plumber'),
-		// css autoprefixer
-		autoprefixer 	= require('gulp-autoprefixer'),
-		// Javascript minification
-		jsmin 				= require('gulp-jsmin'),
-		// run system command (bash)
-		exec 					= require("child_process").exec;
-
-
-/*
-		execute(command[, callback])
-		* command [str] - string like 'notify-send hello-world'
-		* callback [fn] - callback function (optional)
-*//* --------------------------------------------------------*/
 var execute = function(command, callback){
-	// run command
 	exec(command, function(error, stdout, stderr){
-		// and run callback if exists
 		if (callback){
 			callback(stdout);
 		}
 	});
 };
-// log start message
-execute("notify-send 'Gulp.js' 'Gulp was started' -i dialog-apply");
 
+execute("notify-send 'Gulp.js' 'Система сборки успешно запущена.' -i dialog-apply");
 
-/*
-		logSASS(err)
-		* err [obj] - error object taken from gulp-plumber
-*//* --------------------------------------------------------*/
 var logSASS = function(err) {
-	// replace excess info
 	var mess = err.message.replace(/(\n|\r|Current dir:)/gim, '');
-	// log system notification if notifying is enabled
 	if (OPTIONS.notices === true) {
 		execute("notify-send 'SASS' '" + mess + "' -i dialog-no", function() {});
 	}
-	// log message into terminal
-	console.log("\n\r"+
+	return console.log("\n\r"+
 		colors.grey("[ ")+(colors.red('ERROR!'))+colors.grey(" ]")+" SASS\r\n"+
 		(colors.red(mess))+"\r\n"
 	);
 };
 
-
-/*
-		logCoffeeScript(err)
-		* err [obj] - error object taken from gulp-plumber
-*//* --------------------------------------------------------*/
 var logCoffeeScript = function(err) {
-	// replace excess info
 	var mess = err.message.replace(/(\n|\r|Current dir:)/gim, '');
-	// log system notification if notifying is enabled
 	if (OPTIONS.notices === true) {
 		execute("notify-send 'Coffeescript' '" + err.message + "\r\n → " + (err.stack.substr(0, err.stack.indexOf('error:'))) + "'  -i dialog-no", function() {});
 	}
-	// log message into terminal
-	console.log("\n\r"+
+	return console.log("\n\r"+
 		colors.grey("[ ")+(colors.red('ERROR!'))+colors.grey(" ]")+" CoffeeScript\r\n"+
 		colors.red(mess)+colors.red(err.stack)+"\n\r"
 	);
 };
 
-
-/*
-		<connect> - run simple http-server with livereload
-*//* --------------------------------------------------------*/
 gulp.task('connect', function(){
-	// create server
 	connect.server({
-		host: 			OPTIONS.host,
-		port: 			OPTIONS.port,
-		livereload: OPTIONS.livereload,
-		root: 			OPTIONS.root
+		host: OPTIONS.serverHost,
+		port: OPTIONS.serverPort,
+		livereload: {
+			port: 2233
+		},
+		root: [PATH+'dist',PATH+'dev-tools',PATH+'scss',PATH+'server']
 	});
 });
 
-
-/*
-		<reload:js> - reload page after changing *js-files.
-		Was called synchronously after <coffee> task.
-*//* --------------------------------------------------------*/
-gulp.task('reload:js', ['coffee'], function(){
-	return gulp.src(PATH+'dist/js/**/*js')
-		.pipe(connect.reload())
+gulp.task('CoffeeScript', function(){
+	var src = gulp.src([PATH+'coffee/*coffee', PATH+'coffee/*/*coffee'])
+		.pipe(plumber())
+		.pipe(fileinclude());
+	if (OPTIONS.coffeeWraping === true){
+		src
+			.pipe(plumber({
+				errorHandler: function(err){
+					logCoffeeScript(err);
+				}
+			}))
+			.pipe(coffee({bare: true}))
+			.pipe(gulp.dest(PATH+'dist/js/full'))
+			.pipe(jsmin())
+			.pipe(rename({suffix: '.min'}))
+			.pipe(gulp.dest(PATH+'dist/js'));
+	} else {
+		src
+			.pipe(plumber({
+				errorHandler: function(err){
+					logCoffeeScript(err);
+				}
+			}))
+			.pipe(coffee())
+			.pipe(gulp.dest(PATH+'dist/js/full'))
+			.pipe(jsmin())
+			.pipe(rename({suffix: '.min'}))
+			.pipe(gulp.dest(PATH+'dist/js'));
+	}
+	src.pipe(connect.reload());
 });
 
-
-/*
-		<reload:css> - reload page after changing *css-files
-		Was called synchronously after <scss> task.
-*//* --------------------------------------------------------*/
-gulp.task('reload:css', ['scss'], function(){
-	return gulp.src(PATH+'dist/css/*css')
-		.pipe(connect.reload())
-});
-
-
-/*
-		<reload:html> - reload page after changing *html-files
-		Was called synchronously after <html> task.
-*//* --------------------------------------------------------*/
-gulp.task('reload:html', ['html'], function(){
-	return gulp.src(PATH+'dist/*html')
-		.pipe(connect.reload())
-});
-
-
-/*
-		<coffee> - compile coffeescript files
-*//* --------------------------------------------------------*/
-gulp.task('coffee', function(){
-	return gulp.src(PATH+'coffee/**/*coffee')
-		// prevent an error
+gulp.task('SASS', function(){
+	var src = gulp.src(PATH+'scss/*.scss');
+	src
 		.pipe(plumber({
 			errorHandler: function(err){
-				// send notificaiton
-				logCoffeeScript(err);
-			}
-		}))
-		.pipe(coffee({
-			bare: 			OPTIONS.coffeeWrapping
-		}))
-		// non-minificated files
-		.pipe(gulp.dest(PATH+'dist/js/full'))
-		.pipe(jsmin())
-		// minificated files
-		.pipe(rename({suffix: '.min'}))
-		.pipe(gulp.dest(PATH+'dist/js'));
-});
-
-
-/*
-		<scss> - compile SASS files
-*//* --------------------------------------------------------*/
-gulp.task('scss', function(){
-	return gulp.src(PATH+'scss/**/*scss')
-	// prevent an error
-		.pipe(plumber({
-			errorHandler: function(err){
-				// send notificaiton
 				logSASS(err);
 			}
 		}))
 		.pipe(sass())
 		.pipe(autoprefixer({
-			cascade: 		false,
-			browsers: 	OPTIONS.prefixing
+			cascade: false,
+			browsers: [
+				'Chrome > 30', 'Firefox > 20', 'iOS > 5', 'Opera > 12',
+				'Explorer > 8', 'Edge > 10']
 		}))
-		// non-minificated files
 		.pipe(gulp.dest(PATH+'dist/css/full'))
 		.pipe(cssmin())
 		.pipe(rename({
-			suffix: 		'.min'
+			suffix: '.min'
 		}))
-		// minificated files
 		.pipe(gulp.dest(PATH+'dist/css'))
+		.pipe(connect.reload());
 });
 
-
-/*
-		<html> - include html files and put into dest.
-		USING:
-			<section>
-				#=include 'includes/myfile.html'
-			</seciton>
-*//* --------------------------------------------------------*/
-gulp.task('html', function(){
-	return gulp.src(PATH+'html/*.html')
-		// prevent an error
+gulp.task('HTML-include', function(){
+	var src = gulp.src(PATH+'html/*.html');
+	src
 		.pipe(plumber())
-		// watch and include files
 		.pipe(fileinclude())
-		// put into dist
 		.pipe(gulp.dest(PATH+'dist/'))
+		// .pipe(connect.reload());
 });
 
-
-/*
-		<watch> - watching for files changing
-*//* --------------------------------------------------------*/
-gulp.task('watch', function(){
-	gulp.watch(PATH+'coffee/**/*coffee', 	['coffee', 'reload:js']);
-	gulp.watch(PATH+'scss/**/*scss', 			['scss', 'reload:css']);
-	gulp.watch(PATH+'html/**/*html', 			['html', 'reload:html']);
+gulp.task('CSS', function(){
+	src = gulp.src(PATH+'dist/css/*.css');
+	src.pipe(connect.reload());
 });
 
+gulp.task('Javascript', function(){
+	src = gulp.src(PATH+'dist/js/*.js');
+	src.pipe(connect.reload());
+});
+gulp.task('HTML', function(){
+	src = gulp.src(PATH+'dist/*html');
+	src.pipe(connect.reload());
+});
 
-/*
-		<default> - Main task. Running all tasks.
-*//* --------------------------------------------------------*/
+gulp.task('Watch-task', function(){
+	gulp.watch(PATH+'coffee/**/*coffee', 				['CoffeeScript']);
+	gulp.watch(PATH+'scss/**/*.scss', 					['SASS']);
+	gulp.watch(PATH+'html/**/*html', 						['HTML-include', 'HTML']);
+});
+
 gulp.task('default', [
-	'connect',
-	'watch',
-	'scss',
-	'coffee',
-	'reload:css',
-	'reload:js',
-	'reload:html'
+	'CoffeeScript',
+	'Watch-task',
+	'SASS',
+	'HTML-include',
+	'HTML',
+	'connect'
 ]);

@@ -1,6 +1,5 @@
 .checkbox {
 	position: relative;
-	padding: 2px 0;
 	input {
 		position: absolute;
 		top: 0; left: 0;
@@ -11,7 +10,7 @@
 			transform: scale(1);
 		}
 		&:focus ~ label:before {
-			box-shadow: 0 0 0 3px transparentize($primary, .5) !important;
+			box-shadow: inset 0 0 0 1px $primary;
 		}
 
 	}
@@ -23,20 +22,21 @@
 		position: relative;
 		display: inline-block;
 		cursor: pointer;
-		padding-left: 30px;
+		line-height: $checkboxHeight;
+		padding-left: #{$checkboxHeight + $gutter};
+
 		&:before {
 			content: '';
 			display: block;
 			position: absolute;
 			top: 0; left: 0;
-			background: #fff;
+			background: $bg-sub;
 			font-family: "Roboto";
-			height: $h; width: $h;
-			border-radius: 4px;
+			height: $checkboxHeight; width: $checkboxHeight;
+			border-radius: $border;
 			border: none;
 			padding: 0;
-			transition: .1s;
-			box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+			transition: $transition;
 		}
 		&:after {
 			font-family: 'icomoon' !important;
@@ -44,17 +44,18 @@
 			display: block;
 			position: absolute;
 			top: 0; left: 0;
-			width: $h; height: $h;
-			line-height: $h;
+			width: $checkboxHeight; height: $checkboxHeight;
+			line-height: $checkboxHeight;
+			color: $links;
 			text-align: center;
-			font-size: 18px;
-			border-radius: 4px;
+			font-size: $titleSize;
+			border-radius: $border;
 			transform: scale(0);
 			z-index: 2;
-			transition: .2s cubic-bezier(.47,.08,.42,1.52);
+			transition: $transition cubic-bezier(.47,.08,.42,1.52);
 		}
 		&:hover:before {
-			box-shadow: 0 1px 2px 1px rgba(0,0,0,.2);
+			box-shadow: inset 0 0 0 1px transparentize($primary, .5);
 		}
 	}
 }
