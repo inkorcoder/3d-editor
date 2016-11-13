@@ -44,3 +44,6 @@ GlobalUtils =
 				break
 		el = el.parentElement
 		el
+
+	random: (min, max)->
+		min + Math.random() * (max - min)

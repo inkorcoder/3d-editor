@@ -97,57 +97,16 @@
 			}
 		}
 	}
-/*	.btn-group {
-		display: inline-block;
-		button {
-			border-radius: 0;
-			margin: 0;
-			&:not(:last-child) {
-				border-right: 1px solid rgba(0,0,0,.1);
-			}
-			&:first-child {
-				border-radius: 5px 0 0 5px;
-			}
-			&:last-child {
-				border-radius: 0 5px 5px 0;
-			}
-			&.active {
-				position: relative;
-				z-index: 2;
-			}
+	.information {
+		position: absolute;
+		line-height: $h;
+		font-size: $fontSize * .9;
+		top: 0; right: 0;
+		color: $text;
+
+		.count {
+			display: inline-block;
+			width: 20px;
 		}
 	}
-	button {
-		display: inline-block;
-		margin: 1px;
-		background: #fff;
-		overflow: hidden;
-		margin: 0 1.5px;
-		line-height: 26px;
-		font-family: "Roboto";
-		height: 26px; width: auto;
-		border-radius: 5px;
-		border: none;
-		color: #444;
-		padding: 0 12px;
-		font-size: 17px;
-		transition: .2s;
-		font-weight: 400;
-		box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-		&:hover {
-			box-shadow: 0 1px 3px 0 rgba(0,0,0,.2);
-		}
-		&.active {
-			transition-delay: .5s;
-			background: $primary;
-			color: #fff;
-		}
-		&:focus {
-			box-shadow: 0 0 0 3px transparentize($primary, .5);
-		}
-	}
-	.icon.large {
-		font-size: 21px;
-		line-height: inherit;
-	}*/
 }

@@ -35,6 +35,7 @@
 				<ul>
 					<li><a href="#" v-on:click="toggleLeftAside" v-bind:class="{ 'active': isLeft }"><i class="icon icon-check"></i>Left sidebar<span class="help">Ctrl+Shift+L</span></a></li>
 					<li><a href="#" v-on:click="toggleRightAside" v-bind:class="{ 'active': isRight }"><i class="icon icon-check"></i>Right sidebar<span class="help">Ctrl+Shift+R</span></a></li>
+					<li><a href="#" v-on:click="toggleAxis" v-bind:class="{ 'active': axis.visible }"><i class="icon icon-check"></i>Axis helper<span class="help">Ctrl+Shift+H</span></a></li>
 				</ul>
 			</li>
 			<li>
@@ -52,6 +53,9 @@
 				</ul>
 			</li>
 		</ul>
+		<div class="information">
+			Objects: <span class="count">{{objecter.objects.length}}</span>
+		</div>
 	</menu>
 	<!-- <link rel="stylesheet" href="css/{{theme}}.min.css"> -->
 </header>

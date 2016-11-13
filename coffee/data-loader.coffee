@@ -35,29 +35,22 @@ if !electron
 			'primitives/ring'
 			'primitives/sphere'
 		]}
-		{name: 'primitives 2', files: [
-			'primitives/box'
-			'primitives/circle'
-			'primitives/cone'
-			'primitives/plane'
-			'primitives/ring'
-			'primitives/sphere'
-		]}
-		{name: 'primitives 3', files: [
-			'primitives/box'
-			'primitives/circle'
-			'primitives/cone'
-			'primitives/plane'
-			'primitives/ring'
-			'primitives/sphere'
-		]}
-		{name: 'primitives 4', files: [
-			'primitives/box'
-			'primitives/circle'
-			'primitives/cone'
-			'primitives/plane'
-			'primitives/ring'
-			'primitives/sphere'
+		{name: 'Plants', files: [
+			'plants/tree1'
+			'plants/tree2'
+			'plants/tree3'
+			'plants/tree4'
+			'plants/tree5'
+			'plants/stone1'
+			'plants/stone2'
+			'plants/stone3'
+			'plants/stone4'
+			'plants/stone5'
+			'plants/shrub1'
+			'plants/shrub2'
+			'plants/shrub3'
+			'plants/shrub4'
+			'plants/shrub5'
 		]}
 	]
 else DataLoader.load()

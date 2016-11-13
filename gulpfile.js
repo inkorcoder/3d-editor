@@ -81,7 +81,7 @@ gulp.task('CoffeeScript', function(){
 			}))
 			.pipe(coffee({bare: true}))
 			.pipe(gulp.dest(PATH+'dist/js/full'))
-			.pipe(jsmin())
+			// .pipe(jsmin())
 			.pipe(rename({suffix: '.min'}))
 			.pipe(gulp.dest(PATH+'dist/js'));
 	} else {
@@ -93,7 +93,7 @@ gulp.task('CoffeeScript', function(){
 			}))
 			.pipe(coffee())
 			.pipe(gulp.dest(PATH+'dist/js/full'))
-			.pipe(jsmin())
+			// .pipe(jsmin())
 			.pipe(rename({suffix: '.min'}))
 			.pipe(gulp.dest(PATH+'dist/js'));
 	}

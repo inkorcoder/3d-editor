@@ -3,18 +3,18 @@ mainAside = new Vue(
 	el: '#main-aside'
 
 	data:
-		isActive: OPTIONS.leftAside
-		searchModel: ''
-		filtered: 0
-		instrument: 'objects'
-		terrain: Terrain
-		data: DATA
-		lists: GlobalUtils.createTriggerObject DATA, off, 'name'
-		brushTabs: {
-			height: on
-			color: off
-			plaining: off
-		}
+		isActive: 		OPTIONS.leftAside
+		searchModel: 	''
+		filtered: 		0
+		instrument: 	'objects'
+		terrain: 			Terrain
+		data: 				DATA
+		objecter: 		OBJECTER
+		lists: 				GlobalUtils.createTriggerObject DATA, off, 'name'
+		brushTabs:
+			height: 		on
+			color: 			off
+			plaining: 	off
 
 	methods:
 

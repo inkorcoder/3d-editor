@@ -1,44 +1,44 @@
-for title in document.querySelectorAll '[data-title]'
-	title.onmouseover = ->
-		text = this.getAttribute 'data-title'
-		hint = document.createElement 'div'
-		hint.className = 'hint'
-		hint.innerHTML = text
-		document.body.appendChild hint
-		rect = this.getBoundingClientRect()
-		hint.style.left = rect.left+rect.width/2+'px'
-		hint.style.top = rect.top+rect.height+'px'
-		setTimeout ->
-			hint.classList.add 'active'
-		, 1000
-		return
-	title.onmouseout = ->
-		for hint in document.getElementsByClassName 'hint'
-			hint.classList.remove 'active'
-			setTimeout ->
-				document.body.removeChild hint
-			, 100
-		return
+# for title in document.querySelectorAll '[data-title]'
+# 	title.onmouseover = ->
+# 		text = this.getAttribute 'data-title'
+# 		hint = document.createElement 'div'
+# 		hint.className = 'hint'
+# 		hint.innerHTML = text
+# 		document.body.appendChild hint
+# 		rect = this.getBoundingClientRect()
+# 		hint.style.left = rect.left+rect.width/2+'px'
+# 		hint.style.top = rect.top+rect.height+'px'
+# 		setTimeout ->
+# 			hint.classList.add 'active'
+# 		, 1000
+# 		return
+# 	title.onmouseout = ->
+# 		for hint in document.getElementsByClassName 'hint'
+# 			hint.classList.remove 'active'
+# 			setTimeout ->
+# 				document.body.removeChild hint
+# 			, 100
+# 		return
 
-_bindCalc = (calc)->
-	input = calc.previousElementSibling
-	plus = calc.querySelector '.plus'
-	minus = calc.querySelector '.minus'
-	plus.addEventListener 'mousedown', ->
-		val = if parseInt(input.value) then parseInt(input.value) else 0
-		input.value = val+1
-	minus.addEventListener 'mousedown', ->
-		val = if parseInt(input.value) and parseInt(input.value) > 0 then parseInt(input.value) else 1
-		input.value = val-1
-	return
+# _bindCalc = (calc)->
+# 	input = calc.previousElementSibling
+# 	plus = calc.querySelector '.plus'
+# 	minus = calc.querySelector '.minus'
+# 	plus.addEventListener 'mousedown', ->
+# 		val = if parseInt(input.value) then parseInt(input.value) else 0
+# 		input.value = val+1
+# 	minus.addEventListener 'mousedown', ->
+# 		val = if parseInt(input.value) and parseInt(input.value) > 0 then parseInt(input.value) else 1
+# 		input.value = val-1
+# 	return
 
-for calc in document.querySelectorAll '.calc'
-	_bindCalc calc
+# for calc in document.querySelectorAll '.calc'
+# 	_bindCalc calc
 
-Object.prototype.getName = ->
-	funcNameRegex = /function (.{1,})\(/;
-	results = (funcNameRegex).exec((this).constructor.toString());
-	return if (results && results.length > 1) then results[1] else ""
+# Object.prototype.getName = ->
+# 	funcNameRegex = /function (.{1,})\(/;
+# 	results = (funcNameRegex).exec((this).constructor.toString());
+# 	return if (results && results.length > 1) then results[1] else ""
 
 colorPopup = {}
 # mainAside = {}
@@ -60,43 +60,25 @@ OBJECT = new THREE.Object3D()
 LOADER =
 	json: new THREE.JSONLoader()
 
-addToArea = (obj)->
-	object = obj.split('/')[1]
-	switch object
-		when 'box' 				then geo = new THREE.BoxGeometry(1, 1, 1)
-		when 'circle' 		then geo = new THREE.CircleGeometry( 1, 16 )
-		when 'plane' 			then geo = new THREE.PlaneGeometry( 1, 1, 1, 1 )
-		when 'ring' 			then geo = new THREE.RingGeometry( 0.5, 1, 16 )
-		when 'sphere' 		then geo = new THREE.SphereGeometry( 1, 16, 16 )
-		when 'cone' 			then geo = new THREE.ConeGeometry( 1, 2, 16 )
-	m = new THREE.Mesh geo, new THREE.MeshNormalMaterial()
-	switch object
-		when 'box' 				then m.name = 'box'
-		when 'circle' 		then m.name = 'circle'
-		when 'plane' 			then m.name = 'plane'
-		when 'ring' 			then m.name = 'ring'
-		when 'sphere' 		then m.name = 'sphere'
-		when 'cone' 			then m.name = 'cone'
-	OBJECT = m
-	# objectAside.object = m
-	scene.add m
-	return
-	LOADER.json.load 'files/'+obj, (geo, mats)->
-		m = new THREE.Mesh geo, new THREE.MeshFaceMaterial mats
-		scene.add m
+projector = new THREE.Projector()
 
 scene = new THREE.Scene();
-camera = new THREE.PerspectiveCamera(80, window.innerWidth/window.innerHeight, 0.1, 100000 );
+camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 100000 );
 
-axis = new THREE.AxisHelper(200)
-scene.add axis
+
+AXIS = new THREE.AxisHelper(200)
+scene.add AXIS
 
 
 
 renderer = new THREE.WebGLRenderer({alpha: on});
+renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.getElementById('renderWrapper').appendChild renderer.domElement
 controls = new THREE.OrbitControls( camera, renderer.domElement )
+# controls.enabled = off
+
+# console.log OBJECTER.controls
 # controls.enabled = off
 
 random = (min, max)->
@@ -110,9 +92,9 @@ material = new THREE.MeshNormalMaterial();
 loader = new THREE.JSONLoader()
 imgLoader = new THREE.TextureLoader()
 cube = new THREE.Object3D()
-light = new THREE.PointLight( 0xffffff, 1, 1000 );
-ambient = new THREE.AmbientLight( 0x555555);
-light.position.set( 50, 10, 50 );
+light = new THREE.PointLight( 0xbbbbbb, 1, 1000 );
+ambient = new THREE.AmbientLight( 0xbbbbbb);
+light.position.set( 100, 100, 100 );
 scene.add( light );
 scene.add ambient
 
@@ -129,13 +111,21 @@ scene.add ambient
 # 	c.position.z = random -10, 10
 # 	scene.adwadsd c
 
+# lineGeo = new THREE.Geometry()
+# lineGeo.vertices.push new THREE.Vector3 0, 0, 0
+# lineGeo.vertices.push new THREE.Vector3 0, 1, 0
 
+# lineMaterial = new THREE.LineBasicMaterial
+# 	color: 0x00ff00
 
-
-
-camera.position.x = 10;
-camera.position.y = 10;
-camera.position.z = 10;
+# line = new THREE.Mesh(
+# 	new THREE.BoxGeometry 1,1,1
+# 	new THREE.MeshNormalMaterial()
+# )
+# scene.add line
+camera.position.x = 0;
+camera.position.y = 2;
+camera.position.z = 5;
 
 KEYS = {}
 document.addEventListener 'keydown', (e)->
@@ -154,10 +144,10 @@ render = ->
 	lastTime = newTime
 	if window.infoBar and i%10 is 1 then infoBar.fps = difference
 
-	if KEYS.up	then controls.pan( new THREE.Vector2( 0, 10 ) );
-	if KEYS.down	then controls.pan( new THREE.Vector2( 0, -10 ) );
-	if KEYS.left	then controls.pan( new THREE.Vector2( 10, 0 ) );
-	if KEYS.right	then controls.pan( new THREE.Vector2( -10, 0 ) );
+	# if KEYS.up	then controls.pan( new THREE.Vector2( 0, 10 ) );
+	# if KEYS.down	then controls.pan( new THREE.Vector2( 0, -10 ) );
+	# if KEYS.left	then controls.pan( new THREE.Vector2( 10, 0 ) );
+	# if KEYS.right	then controls.pan( new THREE.Vector2( -10, 0 ) );
 
 	renderer.render(scene, camera);
 	controls.update();

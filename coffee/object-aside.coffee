@@ -87,7 +87,7 @@ objectAside = new Vue(
 )
 
 separatorMove = (e)->
-	e.preventDefault()
+	# e.preventDefault()
 	pos = e.pageY / window.innerHeight * 100
 	if e.pageY <= 10 then pos = 10 / window.innerHeight * 100
 	if e.pageY+10 >= window.innerHeight then pos = 100 - (10 / window.innerHeight * 100)
@@ -104,9 +104,9 @@ document
 		document.body.classList.remove 'dragged'
 		document.removeEventListener 'mousemove', separatorMove
 
-document.getElementById 'object-aside'
-	.addEventListener 'mouseover', ->
-		controls.enabled = off
-document.getElementById 'object-aside'
-	.addEventListener 'mouseout', ->
-		controls.enabled = on
+# document.getElementById 'object-aside'
+	# .addEventListener 'mouseover', ->
+		# window.controls.enabled = off
+# document.getElementById 'object-aside'
+	# .addEventListener 'mouseout', ->
+		# window.controls.enabled = on

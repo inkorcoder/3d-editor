@@ -51,7 +51,6 @@ Terrain =
 	modifier: 				'ctrlKey'								# instrument modifier
 
 
-
 	#-----[ Public methods ]------------------------------------------#
 
 	### Create new grid.
@@ -155,6 +154,24 @@ Terrain =
 		# do nothing if plane was not created and added to scene
 		if @plane then scene.remove @plane
 
+		return
+
+
+	setObjectOrigin: (object, event, randomRotation, randomScale)->
+		mouse = new THREE.Vector2()
+		mouse.x = (event.pageX / renderer.domElement.width) * 2 - 1
+		mouse.y = -(event.pageY / renderer.domElement.height) * 2 + 1
+		@raycaster.setFromCamera mouse, camera
+		intersects = @raycaster.intersectObject @plane
+		if intersects[0]
+			object.position.x = intersects[0].point.x
+			object.position.y = intersects[0].point.y
+			object.position.z = intersects[0].point.z
+			if randomRotation
+				object.rotation.y = GlobalUtils.random 0, Math.PI*2
+			if randomScale
+				s = GlobalUtils.random .5, 1.5
+				object.scale.set s, s, s
 		return
 
 	###-------------------------------------------------------------###
@@ -429,6 +446,7 @@ Terrain =
 
 	mouseMove: (event)->
 
+		if !mainHeader.tabs.terrain then return
 		if Terrain.instrument is 'height' then Terrain._heightEvent event
 		if Terrain.instrument is 'color' then Terrain._colorEvent event
 		if Terrain.instrument is 'plaining' then Terrain._plainingEvent event
@@ -436,6 +454,7 @@ Terrain =
 		return
 
 	mouseDown: (event)->
+		if !mainHeader.tabs.terrain then return
 		if Terrain.instrument is 'height' then Terrain._heightEvent event
 		if Terrain.instrument is 'color' then Terrain._colorEvent event
 		if Terrain.instrument is 'plaining' then Terrain._plainingEvent event

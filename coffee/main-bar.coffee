@@ -6,8 +6,10 @@ mainHeader = new Vue(
 		isLeft: 				mainAside.isActive
 		isRight: 				objectAside.isActive
 		isPlaying: 			off
-		tabs: 					{terrain: on, objects: off}
+		tabs: 					{terrain: off, objects: on}
 		theme: 					OPTIONS.theme
+		axis: 					AXIS
+		objecter: 			OBJECTER
 
 	methods:
 
@@ -35,6 +37,10 @@ mainHeader = new Vue(
 
 		setTheme: (name)->
 			@$data.theme = name
+			return
+
+		toggleAxis: ->
+			@$data.axis.visible = !@$data.axis.visible
 			return
 
 	watch:

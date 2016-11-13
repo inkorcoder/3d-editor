@@ -159,37 +159,3 @@ figure {
     font-style: normal;
     font-weight: 500;
 }
-/* font-family: "RobotoBold"; */
-@font-face {
-    font-family: "Roboto";
-    src: url("../fonts/source-sans/RobotoBold.eot");
-    src: url("../fonts/source-sans/RobotoBold.eot?#iefix")format("embedded-opentype"),
-    url("../fonts/source-sans/RobotoBold.woff") format("woff"),
-    url("../fonts/source-sans/RobotoBold.ttf") format("truetype");
-    font-style: normal;
-    font-weight: 700;
-}
-@font-face {
-    font-family: "Source";
-    src: url("../fonts/source-sans/SourceSansPro-Light.otf") format("truetype");
-    font-style: normal;
-    font-weight: 300;
-}
-@font-face {
-    font-family: "Source";
-    src: url("../fonts/source-sans/SourceSansPro-Regular.otf") format("truetype");
-    font-style: normal;
-    font-weight: 400;
-}
-@font-face {
-    font-family: "Source";
-    src: url("../fonts/source-sans/SourceSansPro-Semibold.otf") format("truetype");
-    font-style: normal;
-    font-weight: 500;
-}
-@font-face {
-    font-family: "Source";
-    src: url("../fonts/source-sans/SourceSansPro-Bold.otf") format("truetype");
-    font-style: normal;
-    font-weight: 700;
-}

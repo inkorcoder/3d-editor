@@ -29,7 +29,7 @@
 			<li class="anchor" v-on:click="toggleList(folder.name)">
 				<span><i class="icon icon-folder"></i> {{folder.name}}</span>
 			</li>
-			<li v-for="object in folder.files | filterBy searchModel" v-if="lists[folder.name]" onclick="addToArea('{{object}}')">
+			<li v-for="object in folder.files | filterBy searchModel" v-if="lists[folder.name]" v-on:click="objecter.setActiveObject(object)">
 				<figure>
 					<img v-bind:src="'files/'+object+'/img.png'" alt="">
 					<figcaption>{{ object.split('/')[1] }}</figcaption>
