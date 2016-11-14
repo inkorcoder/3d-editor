@@ -1,0 +1,9 @@
+<div class="log" v-bind:class="{'active': isActive}" id="log">
+	<nav>
+		<button class="btn btn-primary">Clear</button>
+		<button class="btn" v-on:click="isActive = false">&times;</button>
+	</nav>
+	<div class="content">
+		Console
+	</div>
+</div>

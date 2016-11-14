@@ -1,0 +1,31 @@
+.log {
+	position: absolute;
+	z-index: 3;
+	left: 0; right: 0; bottom: 0;
+	height: $logHeight+($gutter*2);
+	background: $bg;
+	border-top: $rangeSize solid $bg-sub;
+	line-height: $logHeight/7;
+	font-family: monospace;
+	color: $text;
+	font-size: $logFontSize;
+	overflow: hidden;
+	transform: translateY(100%);
+	nav {
+		position: absolute;
+		top: 0; left: 0;
+		padding: $gutter;
+	}
+	.content {
+		position: absolute;
+		padding: $gutter;
+		overflow-x: hidden;
+		overflow-y: auto;
+		top: 0; left: 80px + $gutter;
+		right: 0; bottom: 0;
+		@include scrollbar();
+	}
+	&.active {
+		transform: translateY(0);
+	}
+}
