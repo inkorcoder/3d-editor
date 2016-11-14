@@ -8,6 +8,7 @@ mainAside = new Vue(
 		filtered: 		0
 		instrument: 	'objects'
 		terrain: 			Terrain
+		log: 					log
 		data: 				DATA
 		objecter: 		OBJECTER
 		lists: 				GlobalUtils.createTriggerObject DATA, off, 'name'

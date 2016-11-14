@@ -2,7 +2,8 @@
 	position: absolute;
 	background: $bg;
 	color: $text;
-	top: $h; left: 0;width: $left-aside-width;
+	top: $h; left: 0;
+	width: $left-aside-width;
 	bottom: 0;
 	/*border-right: 1px solid rgba(255,255,255,.5);*/
 	/*box-shadow: 0 0 50px rgba(0,0,0,.2);*/
@@ -10,6 +11,9 @@
 	z-index: 3;
 	&.active {
 		transform: translateX(0);
+	}
+	&.console-offset {
+		bottom: $logHeight + $gutter*2;
 	}
 	.header {
 		 background: $bg;
@@ -74,6 +78,17 @@
 			width: 50%;
 			margin: 0;
 			padding: 0 $gutter/2;
+
+			&.active {
+
+				figure {
+					box-shadow: 0 0 0 2px $bg, 0 0 0 3px $primary;
+
+					&:after {
+						display: block;
+					}
+				}
+			}
 		}
 		.anchor {
 			padding: $gutter/4 $gutter $gutter/4;
@@ -84,6 +99,7 @@
 			color: $links;
 			margin-left: -$gutter/2;
 			margin-right: -$gutter/2;
+			margin-bottom: $gutter/2;
 			position: relative;
 			span {
 				background: inherit;
@@ -149,6 +165,21 @@
 				font-size: $fontSize - 2px;
 				line-height: $line;
 				text-align: center;
+			}
+			&:after {
+				font-family: 'icomoon';
+				content: "\e5ca";
+				display: block;
+				position: absolute;
+				top: 0; right: 0;
+				width: $h; height: $h;
+				background: $bg;
+				line-height: $h;
+				text-align: center;
+				z-index: 3;
+				display: none;
+				font-size: $fontSize;
+				color: $links;
 			}
 			&:hover {
 				box-shadow: 0 0 0 2px $bg, 0 0 0 3px $primary;

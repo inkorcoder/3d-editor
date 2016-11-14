@@ -30,6 +30,8 @@ $shadow: 0 -1px 0 rgba(0,0,0,.05),
 							0 1px 2px rgba(0,0,0,.1),
 							-1px 0 0 rgba(0,0,0,.07),
 							1px 0 0 rgba(0,0,0,.07);
+$logHeight: 70px + $gutter;
+$logFontSize: 11px;
 @mixin scrollbar {
 	&::-webkit-scrollbar {
 		width: 6px;
@@ -147,10 +149,11 @@ hr {
 @import 'components/_header.scss';
 @import 'components/_popup.scss';
 @import 'components/_info-bar.scss';
+@import 'components/_log.scss';
 
 aside {
 	/*background: #eee;*/
-	transition: .2s;
+	/*transition: .2s;*/
 	.toggle-aside {
 		position: absolute;
 		top: 50%; left: 100%;
@@ -287,4 +290,14 @@ canvas {
 	&.offset-left {
 		/*left: $left-aside-width;*/
 	}
+}
+
+
+
+.stats {
+	position: absolute;
+	z-index: 10;
+	width: 80px;
+	left: $gutter; bottom: $gutter;
+	height: 48px;
 }

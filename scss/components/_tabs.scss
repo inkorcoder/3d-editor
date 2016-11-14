@@ -1,5 +1,6 @@
 .tabs-list {
 	display: block;
+	padding: 0 !important;
 	width: 100%;
 	text-align: center;
 	white-space: nowrap;
@@ -33,7 +34,7 @@
 		width: 100%;
 		display: table;
 		li {
-			display: table-cell;
+			display: table-cell !important;
 			padding: 0 $gutter !important;
 			vertical-align: middle;
 		}

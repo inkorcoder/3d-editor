@@ -45,7 +45,7 @@ colorPopup = {}
 mainHeader = {}
 vueRenderer = {}
 OPTIONS =
-	leftAside: off
+	leftAside: on
 	rightAside: on
 	theme: 'skin'
 RENDER =
@@ -128,33 +128,37 @@ camera.position.y = 2;
 camera.position.z = 5;
 
 KEYS = {}
-document.addEventListener 'keydown', (e)->
-	ev = e.code.toLowerCase().replace /(Key|Arrow)/gim, ''
-	KEYS[ev] = on
-document.addEventListener 'keyup', (e)->
-	ev = e.code.toLowerCase().replace /(Key|Arrow)/gim, ''
-	KEYS[ev] = off
+
+
+stats = new Stats()
+stats.showPanel 0  # 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild stats.dom
+
+
+
 lastTime = new Date().getTime()
 i = 0
 render = ->
 	requestAnimationFrame( render );
+	stats.begin()
 
 	newTime = new Date().getTime()
 	difference = newTime - lastTime
 	lastTime = newTime
 	if window.infoBar and i%10 is 1 then infoBar.fps = difference
 
-	# if KEYS.up	then controls.pan( new THREE.Vector2( 0, 10 ) );
-	# if KEYS.down	then controls.pan( new THREE.Vector2( 0, -10 ) );
-	# if KEYS.left	then controls.pan( new THREE.Vector2( 10, 0 ) );
-	# if KEYS.right	then controls.pan( new THREE.Vector2( -10, 0 ) );
+	if KEYS.w	then controls.pan( new THREE.Vector2( 0, 10 ) );
+	if KEYS.s	then controls.pan( new THREE.Vector2( 0, -10 ) );
+	if KEYS.a	then controls.pan( new THREE.Vector2( 10, 0 ) );
+	if KEYS.d	then controls.pan( new THREE.Vector2( -10, 0 ) );
 
 	renderer.render(scene, camera);
 	controls.update();
-
+	stats.end()
 	i++
 
 setTimeout ->
+	LOG.add 'Start rendering...'
 	render()
 , 2000
 # console.clear()

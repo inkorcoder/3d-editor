@@ -1,7 +1,8 @@
 OBJECTER =
 
 	materials:
-		phong: 					new THREE.MeshPhongMaterial()
+		green: 					new THREE.MeshPhongMaterial({color: 0x428B23})
+		brown: 					new THREE.MeshPhongMaterial({color: 0x231401})
 
 	raycaster: 				new THREE.Raycaster()
 	objects: 					[]
@@ -13,7 +14,11 @@ OBJECTER =
 	activeObject: 		''
 
 	setActiveObject: (str)->
+		if @activeObject is str then return
 		@activeObject = str
+		LOG.add "
+			Objecter :: spawn object now is [#{str}].
+		"
 		return
 
 	createPrimitiveGeometry: (str)->
@@ -24,6 +29,7 @@ OBJECTER =
 			when 'ring' 			then geometry = new THREE.RingGeometry( 0.5, 1, 16 )
 			when 'sphere' 		then geometry = new THREE.SphereGeometry( 1, 16, 16 )
 			when 'cone' 			then geometry = new THREE.ConeGeometry( 1, 2, 16 )
+		LOG.add 'Objecter :: creating '+str+' geometry...'
 		{
 			geometry: geometry
 			name: str
@@ -41,6 +47,7 @@ OBJECTER =
 			mesh = @createPrimitive @createPrimitiveGeometry(type), @materials.phong
 			scene.add mesh
 			Terrain.setObjectOrigin mesh, event, @randomRotation, @randomScale
+			LOG.add 'Objecter :: new primitive object created from '+type+' geometry.'
 			@objects.push mesh
 		else
 			LOADER.json.load 'files/'+path+'/'+path.split('/')[1]+'.json', (geometry, materials)=>
@@ -57,7 +64,16 @@ OBJECTER =
 				# 	mesh.material.materials[i].specular.setRGB m.specular.r,m.specular.g,m.specular.b
 
 				# mesh = new THREE.Mesh geometry, @materials.phong
-
+				# mesh = new THREE.Mesh(
+				# 	geometry
+				# 	new THREE.MeshFaceMaterial(
+				# 		[
+				# 			@materials.green
+				# 			@materials.brown
+				# 		]
+				# 	)
+				# )
+				LOG.add 'Objecter :: new object created from ['+path+'].'
 				mesh.name = path.split('/')[1]
 				scene.add mesh
 				Terrain.setObjectOrigin mesh, event, @randomRotation, @randomScale
@@ -68,12 +84,17 @@ OBJECTER =
 	remove: (obj)->
 		for object, i in @objects
 			if object and object.uuid and (object.uuid is obj.uuid)
+				LOG.add 'Objecter :: object ['+obj.name+'] ('+obj.uuid+') was removed.'
 				@objects.splice i
 		scene.remove obj
 		return
 
 	setVisible: (obj)->
 		obj.visible = !obj.visible
+		LOG.add "
+			Objecter :: object [#{obj.name}] (#{obj.uuid}) 
+			was #{if obj.visible then 'showed' else 'hiddened'}.
+		"
 		return
 
 	getOject: (x, y)->
@@ -82,7 +103,9 @@ OBJECTER =
 		mouse.y = -(y / renderer.domElement.height) * 2 + 1
 		@raycaster.setFromCamera mouse, camera
 		intersects = @raycaster.intersectObjects @objects
-		return if intersects[0] then intersects[0].object else null
+		if intersects[0]
+			return intersects[0].object
+		else return null
 
 	bind: (obj)->
 
@@ -100,9 +123,15 @@ renderer.domElement.addEventListener 'mousedown', (e)->
 	if object
 		controls.enabled = off
 		OBJECTER.controls.attach object
+		LOG.add "
+			Objecter :: binding controls to [#{object.name}] (#{object.uuid})
+		"
 	else
 		OBJECTER.controls.detach()
 		controls.enabled = on
+		LOG.add "
+			Objecter :: controls was unbinded.
+		"
 		OBJECTER.add OBJECTER.activeObject, e if OBJECTER.activeObject
 	return
 

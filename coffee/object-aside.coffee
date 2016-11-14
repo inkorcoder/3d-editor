@@ -12,6 +12,7 @@ objectAside = new Vue(
 		isActive: OPTIONS.rightAside
 		separatorPosition: 40
 		object: OBJECT
+		log: 							log
 		objectPositionX: OBJECT.position.x
 		objectPositionY: OBJECT.position.y
 		objectPositionZ: OBJECT.position.z

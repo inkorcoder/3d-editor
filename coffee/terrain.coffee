@@ -103,6 +103,13 @@ Terrain =
 			document.removeEventListener 'mousemove', @mouseMove, off
 			return
 
+		LOG.add "
+			Terrain created :: 
+			width: #{width}, height: #{height}, 
+			x-segments: #{widthSegments}, 
+			y-segments: #{heightSegments}
+		"
+
 		return
 
 
@@ -127,6 +134,10 @@ Terrain =
 		@geometry.colorsNeedUpdate = on
 		@geometry.verticesNeedUpdate = on
 
+		LOG.add "
+			Terrain color changed to #{color}
+		"
+
 		return
 
 
@@ -142,6 +153,10 @@ Terrain =
 		# set plane wireframe value
 		@plane.material.wireframe = value
 
+		LOG.add "
+			Terrain wireframe was #{if @plane.material.wireframe then 'enabled' else 'disabled'}
+		"
+
 		return
 
 
@@ -153,6 +168,9 @@ Terrain =
 
 		# do nothing if plane was not created and added to scene
 		if @plane then scene.remove @plane
+		LOG.add "
+			Terrain was removed.
+		"
 
 		return
 

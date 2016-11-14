@@ -5,6 +5,7 @@ mainHeader = new Vue(
 	data:
 		isLeft: 				mainAside.isActive
 		isRight: 				objectAside.isActive
+		log: 						log
 		isPlaying: 			off
 		tabs: 					{terrain: off, objects: on}
 		theme: 					OPTIONS.theme
@@ -33,6 +34,7 @@ mainHeader = new Vue(
 				@$data.tabs[property] = off
 			@$data.tabs[tab] = on
 			mainAside.instrument = tab
+			LOG.add 'GUI :: Active tab is ' + tab
 			return
 
 		setTheme: (name)->
@@ -41,6 +43,16 @@ mainHeader = new Vue(
 
 		toggleAxis: ->
 			@$data.axis.visible = !@$data.axis.visible
+			LOG.add "
+				GUI :: Axis helper was #{if @$data.axis.visible then 'enabled' else 'disabled'}
+			"
+			return
+
+		toggleLog: ->
+			@$data.log.isActive = !@$data.log.isActive
+			LOG.add "
+				GUI :: Console was #{if @$data.log.isActive then 'enabled' else 'disabled'}
+			"
 			return
 
 	watch:

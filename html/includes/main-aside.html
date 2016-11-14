@@ -1,4 +1,4 @@
-<aside class="main-aside" id="main-aside" v-bind:class="{'active':isActive}">
+<aside class="main-aside" id="main-aside" v-bind:class="{'active':isActive, 'console-offset': log.isActive}">
 
 	<div class="header">
 		<div class="row">
@@ -29,7 +29,7 @@
 			<li class="anchor" v-on:click="toggleList(folder.name)">
 				<span><i class="icon icon-folder"></i> {{folder.name}}</span>
 			</li>
-			<li v-for="object in folder.files | filterBy searchModel" v-if="lists[folder.name]" v-on:click="objecter.setActiveObject(object)">
+			<li v-for="object in folder.files | filterBy searchModel" v-if="lists[folder.name]" v-on:click="objecter.setActiveObject(object)" v-bind:class="{'active': objecter.activeObject === object}">
 				<figure>
 					<img v-bind:src="'files/'+object+'/img.png'" alt="">
 					<figcaption>{{ object.split('/')[1] }}</figcaption>

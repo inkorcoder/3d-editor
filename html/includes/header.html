@@ -22,36 +22,37 @@
 		</div> -->
 		<ul class="clear-list">
 			<li>
-				<a href="#">File</a>
+				<a>File</a>
 				<ul>
-					<li><a href="#">New file<span class="help">Ctrl+N</span></a></li>
-					<li><a href="#">Open file<span class="help">Ctrl+O</span></a></li>
+					<li><a>New file<span class="help">Ctrl+N</span></a></li>
+					<li><a>Open file<span class="help">Ctrl+O</span></a></li>
 					<li class="separator"></li>
-					<li><a href="#">Save file<span class="help">Ctrl+S</span></a></li>
+					<li><a>Save file<span class="help">Ctrl+S</span></a></li>
 				</ul>
 			</li>
 			<li>
-				<a href="#">View</a>
+				<a>View</a>
 				<ul>
-					<li><a href="#" v-on:click="toggleLeftAside" v-bind:class="{ 'active': isLeft }"><i class="icon icon-check"></i>Left sidebar<span class="help">Ctrl+Shift+L</span></a></li>
-					<li><a href="#" v-on:click="toggleRightAside" v-bind:class="{ 'active': isRight }"><i class="icon icon-check"></i>Right sidebar<span class="help">Ctrl+Shift+R</span></a></li>
-					<li><a href="#" v-on:click="toggleAxis" v-bind:class="{ 'active': axis.visible }"><i class="icon icon-check"></i>Axis helper<span class="help">Ctrl+Shift+H</span></a></li>
+					<li><a v-on:click="toggleLeftAside" v-bind:class="{ 'active': isLeft }"><i class="icon icon-check"></i>Left sidebar<span class="help">Ctrl+Shift+L</span></a></li>
+					<li><a v-on:click="toggleRightAside" v-bind:class="{ 'active': isRight }"><i class="icon icon-check"></i>Right sidebar<span class="help">Ctrl+Shift+R</span></a></li>
+					<li><a v-on:click="toggleAxis" v-bind:class="{ 'active': axis.visible }"><i class="icon icon-check"></i>Axis helper<span class="help">Ctrl+Shift+H</span></a></li>
+					<li><a v-on:click="toggleLog" v-bind:class="{ 'active': log.isActive }"><i class="icon icon-check"></i>Console<span class="help">Ctrl+Shift+C</span></a></li>
 				</ul>
 			</li>
 			<li>
-				<a href="#">Mode</a>
+				<a>Mode</a>
 				<ul>
-					<li><a href="#" v-on:click="setActiveTab('terrain')" v-bind:class="{'active' : tabs.terrain}"><i class="icon icon-check"></i>Terrain</a></li>
-					<li><a href="#" v-on:click="setActiveTab('objects')" v-bind:class="{'active' : tabs.objects}"><i class="icon icon-check"></i>Objects</a></li>
+					<li><a v-on:click="setActiveTab('terrain')" v-bind:class="{'active' : tabs.terrain}"><i class="icon icon-check"></i>Terrain</a></li>
+					<li><a v-on:click="setActiveTab('objects')" v-bind:class="{'active' : tabs.objects}"><i class="icon icon-check"></i>Objects</a></li>
 				</ul>
 			</li>
-			<li>
-				<a href="#">Theme</a>
+<!-- 			<li>
+				<a>Theme</a>
 				<ul>
-					<li><a href="#" v-on:click="setTheme('skin')" v-bind:class="{'active' : theme === 'skin'}"><i class="icon icon-check"></i>Default</a></li>
-					<li><a href="#" v-on:click="setTheme('mac')" v-bind:class="{'active' : theme === 'mac'}"><i class="icon icon-check"></i>Mac OS</a></li>
+					<li><a v-on:click="setTheme('skin')" v-bind:class="{'active' : theme === 'skin'}"><i class="icon icon-check"></i>Default</a></li>
+					<li><a v-on:click="setTheme('mac')" v-bind:class="{'active' : theme === 'mac'}"><i class="icon icon-check"></i>Mac OS</a></li>
 				</ul>
-			</li>
+			</li> -->
 		</ul>
 		<div class="information">
 			Objects: <span class="count">{{objecter.objects.length}}</span>
