@@ -35,6 +35,7 @@ Terrain =
 	heightSegments: 	10											# grid Y segments
 
 	grid: 						[]											# grid array
+	steps: 						[]											# grid array
 	plane: 						null										# plane object
 	geometry: 				null										# plane geometry object
 
@@ -60,13 +61,13 @@ Terrain =
 			-> heightSegments [int] - number of height cells
 			<= nothing
 	###
-	create: (width, height, widthSegments, heightSegments)->
+	create: (widthSegments, heightSegments)->
 
 		# remove plane if exists
 		if @plane then scene.remove @plane
 
 		# creating new geometry
-		geometry = new THREE.PlaneGeometry width, height, widthSegments, heightSegments
+		geometry = new THREE.PlaneGeometry widthSegments, heightSegments, widthSegments, heightSegments
 
 		# creating grid array
 		# ---------y---------
@@ -84,6 +85,24 @@ Terrain =
 			color = if i%2 is 0 then .3 else .4
 			@grid[row].push i
 			f.color.setRGB color, color, color
+		for h in [0...@heightSegments]
+			row = []
+			for w in [0...@widthSegments]
+				s = new THREE.Mesh(
+					new THREE.PlaneGeometry 1, 1, 1, 1
+					new THREE.MeshBasicMaterial({
+						color: 0x00ff00
+					})
+				)
+				s.position.x = (-@widthSegments/2)+w+.5
+				s.position.z = (-@heightSegments/2)+h+.5
+				s.rotation.x = -Math.PI/2
+				s.position.y = .1
+				row.push s
+				s.visible = off
+				scene.add s
+			@steps.push row
+
 
 		# creating new mesh and adding to scene
 		@plane = new THREE.Mesh(
@@ -104,10 +123,7 @@ Terrain =
 			return
 
 		LOG.add "
-			Terrain created :: 
-			width: #{width}, height: #{height}, 
-			x-segments: #{widthSegments}, 
-			y-segments: #{heightSegments}
+			Terrain created :: [ #{widthSegments} x #{heightSegments} ]
 		"
 
 		return
@@ -159,6 +175,26 @@ Terrain =
 
 		return
 
+	### Setting plane color
+			-> value 					[bool] - Three.js-color (0xrrggbb)
+			<= nothing
+	###
+	setSteps: (value)->
+
+		# do nothing if plane was not created and added to scene
+		if !@plane then return
+
+		# set plane wireframe value
+		for row in @steps
+			for col in row
+				col.visible = value
+
+		LOG.add "
+			Terrain steps grid was #{if @steps[0][0].visible then 'enabled' else 'disabled'}
+		"
+
+		return
+
 
 	### Removing plane from scene
 			-> nothing
@@ -167,7 +203,9 @@ Terrain =
 	remove: ->
 
 		# do nothing if plane was not created and added to scene
-		if @plane then scene.remove @plane
+		if @plane
+			scene.remove @plane
+			@plane = null
 		LOG.add "
 			Terrain was removed.
 		"
