@@ -10,8 +10,8 @@ terrainAddPopup = new Vue(
 
 		addTerrain: ->
 			Terrain.create(
-				@$data.terrain.width
-				@$data.terrain.height
+				# @$data.terrain.width
+				# @$data.terrain.height
 				@$data.terrain.widthSegments
 				@$data.terrain.heightSegments
 			)

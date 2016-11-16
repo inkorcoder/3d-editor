@@ -63,6 +63,9 @@
 	&.small .inner {
 		width: #{$left-aside-width*1.5};
 	}
+	&.smallest .inner {
+		width: #{$left-aside-width};
+	}
 	&.active {
 		opacity: 1;
 		transform: scale(1,1);

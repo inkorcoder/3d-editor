@@ -62,6 +62,9 @@ mainAside = new Vue(
 		setWireframe: (event)->
 			@$data.terrain.setWireframe event.target.checked
 
+		setSteps: (event)->
+			@$data.terrain.setSteps event.target.checked
+
 		setActiveBrushTab: (tab)->
 			for property of @$data.brushTabs
 				@$data.brushTabs[property] = off

@@ -1,11 +1,11 @@
-<div class="popup small" id="terrain-add-popup" v-bind:class="{'active': isActive}">
+<div class="popup smallest" id="terrain-add-popup" v-bind:class="{'active': isActive}">
 	<div class="inner">
 
 <!-- 		<div class="clearfix">
 			<label for="newTerrainName">Name</label>
 			<input id="newTerrainName" type="text" class="input" placeholder="Type name...">
 		</div> -->
-		<div class="row">
+<!-- 		<div class="row">
 			<div class="col-4">
 				<label for="newTerrainWidth">Width</label>
 				<div class="relative">
@@ -27,10 +27,10 @@
 				</div>
 			</div>
 		</div>
-		<span class="space"></span>
+		<span class="space"></span> -->
 		<div class="row">
 			<div class="col-6">
-				<label for="newTerrainWidthSegments">Width Segments</label>
+				<label for="newTerrainWidthSegments">Width</label>
 				<div class="relative">
 					<input id="newTerrainWidthSegments" type="text" class="input number"  v-model="terrain.widthSegments" placeholder="10" value="10">
 					<div class="calc">
@@ -40,7 +40,7 @@
 				</div>
 			</div>
 			<div class="col-6">
-				<label for="newTerrainLengthSegments">Length Segments</label>
+				<label for="newTerrainLengthSegments">Length</label>
 				<div class="relative">
 					<input id="newTerrainLengthSegments" type="text" class="input number"  v-model="terrain.heightSegments" placeholder="10" value="10">
 					<div class="calc">

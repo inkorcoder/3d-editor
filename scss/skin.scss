@@ -107,6 +107,12 @@ label {
 .spaced-horizontal {
 	padding: 0 $gutter;
 }
+.spaced-top {
+	padding-top: $gutter;
+}
+.spaced-bottom {
+	padding-bottom: $gutter;
+}
 hr {
 	background: $bg-sub;
 	display: block;
