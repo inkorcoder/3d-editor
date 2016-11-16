@@ -69,35 +69,18 @@ gulp.task('connect', function(){
 });
 
 gulp.task('CoffeeScript', function(){
-	var src = gulp.src([PATH+'coffee/*coffee', PATH+'coffee/*/*coffee'])
-		.pipe(plumber())
-		.pipe(fileinclude());
-	if (OPTIONS.coffeeWraping === true){
-		src
-			.pipe(plumber({
-				errorHandler: function(err){
-					logCoffeeScript(err);
-				}
-			}))
-			.pipe(coffee({bare: true}))
-			.pipe(gulp.dest(PATH+'dist/js/full'))
-			// .pipe(jsmin())
-			.pipe(rename({suffix: '.min'}))
-			.pipe(gulp.dest(PATH+'dist/js'));
-	} else {
-		src
-			.pipe(plumber({
-				errorHandler: function(err){
-					logCoffeeScript(err);
-				}
-			}))
-			.pipe(coffee())
-			.pipe(gulp.dest(PATH+'dist/js/full'))
-			// .pipe(jsmin())
-			.pipe(rename({suffix: '.min'}))
-			.pipe(gulp.dest(PATH+'dist/js'));
-	}
-	src.pipe(connect.reload());
+	return gulp.src(PATH+'coffee/**/*coffee')
+		.pipe(plumber({
+			errorHandler: function(err){
+				logCoffeeScript(err);
+			}
+		}))
+		.pipe(coffee({bare: true}))
+		.pipe(gulp.dest(PATH+'dist/js/full'))
+		// .pipe(jsmin())
+		.pipe(rename({suffix: '.min'}))
+		.pipe(gulp.dest(PATH+'dist/js'))
+		.pipe(connect.reload());
 });
 
 gulp.task('SASS', function(){
