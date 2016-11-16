@@ -84,9 +84,10 @@ OBJECTER =
 	remove: (obj)->
 		for object, i in @objects
 			if object and object.uuid and (object.uuid is obj.uuid)
-				LOG.add 'Objecter :: object ['+obj.name+'] ('+obj.uuid+') was removed.'
 				@objects.splice i
+		LOG.add 'Objecter :: object ['+obj.name+'] ('+obj.uuid+') was removed.'
 		scene.remove obj
+		OBJECTER.controls.detach()
 		return
 
 	setVisible: (obj)->
@@ -119,25 +120,29 @@ renderer.domElement.addEventListener 'mousedown', (e)->
 	# e.stopPropagation();
 	if !e.ctrlKey then return
 	if mainHeader.tabs.terrain then return
+	if !Terrain.plane then return
 	object = OBJECTER.getOject(e.clientX, e.clientY)
 	if object
 		controls.enabled = off
 		OBJECTER.controls.attach object
+		objectAside.object = object
 		LOG.add "
 			Objecter :: binding controls to [#{object.name}] (#{object.uuid})
 		"
 	else
+		if !OBJECTER.controls.object
+			OBJECTER.add OBJECTER.activeObject, e if OBJECTER.activeObject
 		OBJECTER.controls.detach()
 		controls.enabled = on
 		LOG.add "
 			Objecter :: controls was unbinded.
 		"
-		OBJECTER.add OBJECTER.activeObject, e if OBJECTER.activeObject
 	return
 
 renderer.domElement.addEventListener 'mousemove', (e)->
 	if !e.ctrlKey then return
 	if mainHeader.tabs.terrain then return
+	if !Terrain.plane then return
 	if OBJECTER.activeObject and .3 < Math.random() < .6
 		OBJECTER.add OBJECTER.activeObject, e
 	return
