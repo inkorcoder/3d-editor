@@ -1,7 +1,6 @@
 document.addEventListener 'keydown', (e)->
 	ev = e.code.toLowerCase().replace /(Key|Arrow)/gim, ''
 	KEYS[ev] = on
-	console.log e.keyCode
 	switch e.keyCode
 		when 49 # 1
 			OBJECTER.controls.setMode "translate"

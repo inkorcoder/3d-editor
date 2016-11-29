@@ -22,6 +22,7 @@ var gulp = require('gulp'),
 		plumber = require('gulp-plumber'),
 		autoprefixer = require('gulp-autoprefixer'),
 		jsmin = require('gulp-jsmin'),
+		newer = require('gulp-newer'),
 
 		exec = require("child_process").exec;
 

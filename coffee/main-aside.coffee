@@ -6,7 +6,7 @@ mainAside = new Vue(
 		isActive: 		OPTIONS.leftAside
 		searchModel: 	''
 		filtered: 		0
-		instrument: 	'objects'
+		instrument: 	'terrain'
 		terrain: 			Terrain
 		log: 					log
 		data: 				DATA

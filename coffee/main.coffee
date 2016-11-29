@@ -63,15 +63,22 @@ LOADER =
 projector = new THREE.Projector()
 
 scene = new THREE.Scene();
-camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 100000 );
+camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 100000 );
 
 
 AXIS = new THREE.AxisHelper(200)
 scene.add AXIS
 
 
+OBJ = new THREE.Mesh(
+	new THREE.Geometry()
+	new THREE.MeshNormalMaterial()
+)
 
-renderer = new THREE.WebGLRenderer({alpha: on});
+scene.add OBJ
+
+
+renderer = new THREE.WebGLRenderer();
 renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.getElementById('renderWrapper').appendChild renderer.domElement

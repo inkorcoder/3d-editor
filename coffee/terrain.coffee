@@ -38,6 +38,8 @@ Terrain =
 	steps: 						[]											# grid array
 	plane: 						null										# plane object
 	geometry: 				null										# plane geometry object
+	isStepsShowing: 	off
+
 
 	raycaster: 				new THREE.Raycaster()		# raycaster
 	mouse: 						new THREE.Vector2()			# mouse vector
@@ -92,12 +94,16 @@ Terrain =
 					new THREE.PlaneGeometry 1, 1, 1, 1
 					new THREE.MeshBasicMaterial({
 						color: 0x00ff00
+						transparent: on
+						opacity: .5
+						depthTest: false
+						depthWrite: false
 					})
 				)
 				s.position.x = (-@widthSegments/2)+w+.5
 				s.position.z = (-@heightSegments/2)+h+.5
 				s.rotation.x = -Math.PI/2
-				s.position.y = .1
+				s.position.y = .01
 				row.push s
 				s.visible = off
 				scene.add s
@@ -187,6 +193,7 @@ Terrain =
 		# set plane wireframe value
 		for row in @steps
 			for col in row
+				@isStepsShowing = value
 				col.visible = value
 
 		LOG.add "
@@ -206,6 +213,10 @@ Terrain =
 		if @plane
 			scene.remove @plane
 			@plane = null
+			for row in @steps
+				for step in row
+					scene.remove step
+			@steps = []
 		LOG.add "
 			Terrain was removed.
 		"
@@ -517,3 +528,22 @@ Terrain =
 		return
 
 	###-------------------------------------------------------------###
+
+document.addEventListener 'mousedown', (event)->
+	if Terrain.plane and Terrain.isStepsShowing
+		caster = new THREE.Raycaster()
+		mouse = new THREE.Vector2()
+		mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1
+		mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1
+		caster.setFromCamera mouse, camera
+		steps = []
+		for row in Terrain.steps
+			for step in row
+				steps.push step
+		# getting intersection
+		intersects = caster.intersectObjects steps
+		if intersects[0]
+			color = intersects[0].object.material.color
+			if color.r is 1
+				color.setRGB 0, 1, 0
+			else color.setRGB 1, 0, 0

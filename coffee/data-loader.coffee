@@ -51,6 +51,18 @@ if !electron
 			'plants/shrub3'
 			'plants/shrub4'
 			'plants/shrub5'
+			'plants/birch'
+			'plants/birch-tree'
+			'plants/oak'
+			'plants/pine'
+			'plants/pine-tree'
+			'plants/flo-camomile'
+			'plants/flo-narcissus'
+			'plants/flo-tuilp-red'
+			'plants/flo-tuilp-yellow'
+			'plants/grass1'
+			'plants/grass2'
+			'plants/grass3'
 		]}
 	]
 else DataLoader.load()
