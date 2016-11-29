@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+			outline: none;
+		}
+		body {
+			font-family: sans-serif;
+			padding: 20px;
+			text-align: center;
+			font-size: 14px;
+		}
+		.wrapper {
+			display: table;
+			table-layout: fixed;
+			height: 257px;
+			border: 1px solid #ddd;
+			width: 100%;
+			margin-bottom: 20px;
+			border-collapse: collapse;
+		}
+		.wrapper.grid {
+			border-color: transparent;
+		}
+		.wrapper.grid .item {
+			border-color: transparent;
+			color: transparent;
+		}
+		.col {
+			display: table-cell;
+		}
+		.item {
+			display: block;
+			height: 30px;
+			line-height: 30px;
+			border: 1px solid rgba(0,0,0,.1);
+			color: #ddd;
+		}
+		.item.active {
+			background: #ddd;
+			color: #aaa;
+		}
+		.item.water {
+			animation: add .6s forwards;
+		}
+		.item.water:nth-last-child(1) {animation-delay: .3s;}
+		.item.water:nth-last-child(2) {animation-delay: .4s;}
+		.item.water:nth-last-child(3) {animation-delay: .5s;}
+		.item.water:nth-last-child(4) {animation-delay: .6s;}
+		.item.water:nth-last-child(5) {animation-delay: .7s;}
+		.item.water:nth-last-child(6) {animation-delay: .8s;}
+		.item.water:nth-last-child(7) {animation-delay: .9s;}
+		.item.water:nth-last-child(8) {animation-delay: 1s;}
+		.item.water:nth-last-child(9) {animation-delay: 1.1s;}
+		.item.water:nth-last-child(10) {animation-delay: 1.2s;}
+		button {
+			display: inline-block;
+			border: none;
+			background: #659;
+			color: #fff;
+			font-weight: bold;
+			line-height: 20px;
+			padding: 6px 10px;
+			font-size: 12px;
+			text-transform: uppercase;
+			transition: .3s;
+			cursor: pointer;
+		}
+		button:hover {
+			box-shadow: inset 1000px 0 0 0 rgba(0,0,0,.3);
+		}
+		button:active {
+			box-shadow: inset 1000px 0 0 0 rgba(255,255,255,.3);
+		}
+		button:focus {
+			box-shadow: inset 1000px 0 0 0 rgba(255,255,255,.3);
+		}
+		nav {
+			text-align: left;
+			margin-top: 20px;
+		}
+		nav span {
+			display: inline-block;
+			padding: 0 10px;
+			vertical-align: middle;
+			margin: 10px 0;
+			color: #777;
+			line-height: 20px;
+			font-size: 16px;
+			font-family: monospace;
+			letter-spacing: -1px;
+		}
+		.info {
+			position: relative;
+		}
+		.info #status {
+			position: absolute;
+			top: 0; right: 0;
+			font-size: 20px;
+			font-family: monospace;
+			line-height: 30px;
+		}
+		.outer {
+			max-width: 1000px;
+			margin: 0 auto;
+		}
+		@keyframes add {
+			0% {
+				transform: scale(1);
+			}
+			30% {
+				transform: scale(.9);
+			}
+			60% {
+				transform: scale(1.3);
+			}
+			100% {
+				transform: scale(1);
+				background: #59b;
+				border-color: #48a;
+			}
+		}
+	</style>
+</head>
+<body>
+
+	<script>
+
+		Array.prototype.max = function() {
+			return Math.max.apply(null, this);
+		};
+		Array.prototype.min = function() {
+			return Math.min.apply(null, this);
+		};
+
+	</script>
+
+	<script>
+
+		array1 = [2, 1, 5, 0, 3, 4, 7, 2, 3, 1, 0];
+		array2 = [7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7];
+		array3 = [0, 7, 7, 0, 7, 4, 7, 2, 3, 7, 0];
+		array4 = [2, 6, 5, 3, 3, 4, 7, 2, 3, 1, 0];
+		array5 = [2, 1, 5, 0, 3, 4, 7, 2, 0, 2, 0];
+		array6 = [7, 6, 5, 4, 3, 2, 3, 4, 5, 6, 7];
+
+		/*
+			Вспомогательная функция
+			---
+			Отрисовывает вертикальную колонку, для каждого элемента
+			массива. Если индекс колонки меньше элемента, она рисуется
+			обычной. Если больше - закрашивается серой.
+		*/
+		drawCol = function(val, max, indx) {
+			var i, str;
+			str = '';
+			i = 0;
+			while (i < max + 1) {
+				str += '<span class="item ' + (max - i < val ? 'active' : '') + '">'+indx+'</span>';
+				i++;
+			}
+			return "<span class='col'>" + str + "</span>";
+		};
+
+		/*
+			Вспомогательная функция
+			---
+			Проверяет, есть ли в массиве числа еще больше или такие же.
+			Если есть - возвращает true, если нет - false.
+		*/
+		hasBigger = function(arr, val, ind){
+			result = true
+			// slice не обязательн оукзаывать второй параметр, в таком
+			// случае вернется массив от указанного индекса и до конца
+			arr.slice(ind).map(function(v, i){
+				if (v >= val){
+					result = false
+				}
+			});
+			return result;
+		}
+
+		/*
+			Вспомогательная функция
+			---
+			На вход принимает массив с числами.
+		*/
+		calculate = function(arr){
+
+			// массив для пиковых значений
+			var points = []
+			// строка, в которую запишется HTML код ячеек
+			var res = '';
+			// максимальное значение в массиве
+			var max = arr.max()
+			// количество ячеек-водичек в таблице
+			var waterWeight = 0;
+
+			/*
+				Вспомогательная функция
+				---
+				Берет заготовленные пиковые точки из массива 
+				и закрашивает колонки-водички, которые находятся
+				в ямке.
+			*/
+			drawWater = function(){
+				// для каждой точки
+				points.map(function(value, index){
+					// проверяем, есть ли следующая
+					// для того чтобы сформировать из них условую чать 
+					// для подробного анализа ямки
+					if (points[index+1]){
+						// находим минимум среди этих двух точек
+						// вода не может быть выше чем минимальная точка
+						// иначе она перельется
+						min = [
+							arr[value],
+							arr[points[index+1]]
+						].min()
+						// находим колонки, которые попадают в этот промежуток
+						// вызываем .call потому что нативно селектор 
+						// возвращает NodeList а не массив, и методов 
+						// как у массива у него нет.
+						columns = Array.prototype.slice
+							.call(document.querySelectorAll('.col'), value, points[index+1])
+						// для каждой колонки в промежутке
+						columns.map(function(column, indx){
+							// проверяем, не является ли она началом или концом ямки
+							if (
+								(indx !== 0) &&
+								(indx !== columns[columns.length-1])
+							){
+								// находим все клетки в колонке, проделываем то же
+								// что и с колонками
+								items = Array.prototype.slice.call(column.querySelectorAll('.item'))
+								// для каждой клетки
+								items.map(function(item, _indx){
+									// проверяем, находится ли она ниже минимальной точки 
+									// так как в HTML элементы в потоке идуд друг за другом и 
+									// нумерация начинается сверху то в итоге мы бы получили картинку
+									// отраженную вниз зеркально
+									// чтобы избежать этого, мы переворачиваем все зеркально, поэтому
+									// чтобы узнать настоящий индекс, его нужно отнимать от максимального
+									// значения
+									// например: число 2, максимум 10. 10 - 2 = 8; 
+									// Таким образом до конца остается 2 ячейки.
+									// Пока до конца не остается 2 ячейки (тоесть еще не добрались до числа 2)
+									// то ячейку не закрашиваем
+									// тут же, попутно проверяем, не является ли она закрашенной, чтобы
+									// вода не проходила каждый раз в самый низ.
+									if (max-_indx < min && !item.classList.contains('active')){
+										item.classList.add('water')
+										// и прибавляем 1 к счетчику водички
+										waterWeight++
+									}
+								});
+							}
+						});
+					}
+				});
+			}
+
+			// для каждого числа в массиве
+			arr.map(function(val, index){
+				// проверяем
+				// (
+				// если есть следующее число (?) то проверяем, больше ли текущее число 
+				// за предыущее и больше ли оно за следующее (:) 
+				// если нет следующего - то просто смотрим, больше ли оно за предыдущее 
+				// - ИЛИ- 
+				// если есть предыдущее число (для первого элемента в массиве его не будет) (?)
+				// то проверяем, больше ли текущее число за следующее, больше ли оно за предыдущее 
+				// и есть ли еще потенциально такие же больше числа, чтобы сформировать начало 
+				// и конец ямки (:) или же, если предыдущего нет, то проверяем, то проверяем, 
+				// больше ли текущее число за следующее, больше ли оно за предыдущее
+				// )
+				// таким образом мы получим самые высокие точки, взяв каждую пару которых последовательно
+				// мы сможем сформировать ямку. Одна точка ля начала ямки, вторая для конца
+				if (
+					(
+						arr[index+1] ? (val > arr[index-1] && val >= arr[index+1]) : val > arr[index-1]
+					) ||
+					(
+						arr[index-1] ? val > arr[index+1] && val >= arr[index-1] && !hasBigger(arr, val, index) : val > arr[index+1] && !hasBigger(arr, val, index)
+					)
+				){
+					// добавляем точку в массив
+					points.push(index)
+				}
+				// создаем строку для отображения ячейки визуально
+				res += drawCol(val, max, index)
+			});
+			// вставляем все колонки в таблицу
+			document.querySelector('.wrapper').innerHTML = res;
+			// пробегаемся по ямкам и заливаем и водичкой, указываем общее количество ячеек-водичек
+			drawWater()
+			document.getElementById('status').innerHTML = 'total: '+waterWeight;
+		}
+
+		// вспомогательная функция для смены класса у таблицы
+		function toggleGrid(){
+			document.querySelector('.wrapper').classList.toggle('grid')
+		};
+
+	</script>
+
+	<div class="outer">
+
+		<!-- Основная таблица -->
+		<div class="wrapper grid"></div>
+
+		<!-- Статус -->
+		<div class="info">
+			<button onclick="toggleGrid()">Toggle grid</button>
+			<span id="status"></span>
+		</div>
+
+		<!-- Навигация по разным наборам чисел -->
+		<nav>
+			<button onclick="calculate(array1)">Calc</button>
+			<span>[2, 1, 5, 0, 3, 4, 7, 2, 3, 1, 0] (default)</span><br>
+			<button onclick="calculate(array2)">Calc</button>
+			<span>[7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7]</span><br>
+			<button onclick="calculate(array3)">Calc</button>
+			<span>[0, 7, 7, 0, 7, 4, 7, 2, 3, 7, 0]</span><br>
+			<button onclick="calculate(array4)">Calc</button>
+			<span>[2, 6, 5, 3, 3, 4, 7, 2, 3, 1, 0]</span><br>
+			<button onclick="calculate(array5)">Calc</button>
+			<span>[2, 1, 5, 0, 3, 4, 7, 2, 0, 2, 0]</span><br>
+			<button onclick="calculate(array6)">Calc</button>
+			<span>[7, 6, 5, 4, 3, 2, 3, 4, 5, 6, 7]</span><br>
+		</nav>
+
+	</div>
+
+</body>
+</html>

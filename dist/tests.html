@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/icons.css">
+	<link rel="stylesheet" href="css/skin.min.css">
+
+
+</head>
+<body>
+
+	<script>
+
+	// 1
+	s = 'Hello world'
+	s[0] = 'W'
+	console.log(s) // Hello world, | 4
+
+	// 2
+	x = []
+	y = x
+	y[0] = 7
+	console.log(x[0], x === y) // 7, true | 1, 6
+
+	// 3
+	nyc = {
+		fullName: "New York City",
+		mayor: 'Bill debill',
+		population: 90000000000,
+		boroughts: 5
+	}
+	for (i in nyc){
+		console.log(i)
+	} // console.log(i) | 2
+
+	// 4
+	a = 3
+	switch (a){
+		default:
+			a += 4
+		case 1:
+			a += 2
+			break;
+		case 2:
+			a += 3
+			break;
+	}
+	console.log(a) // 9 | 7
+
+	// 5
+	console.log(1/0) // infinity | 2
+
+	// 6
+	// JavaScript выполняется в Java Virtual
+	// Machine (JVM) которая реализована в
+	// браузере
+	// Неверно | 2
+
+	// 7
+	a = .1
+	b = .2
+	c = .3
+	console.log(a + (b + c) === (a + b) + c)
+	// 0.6 === 0.6000000000000001 (false) | 2
+
+	// 8
+	a = []
+	console.log((a === a) +''+ (a !== a)) // true false | 4
+
+	// 9
+	var a = '' || 0 || 2 || true || false
+	var b = 3 && true && false && null
+	console.log(a, b) // 2 false | 4
+
+	// 10
+	/*Что из нижесказанного верно
+		относительно комментариев в javascript-коде?
+		(может быть несколько вариантов ответов)
+		1. Комментарии могут упростить
+		понимание кода
+		2. Комментарии увеличивают скорость
+		выполнения кода
+		3. Комментарии значительно уменьшают
+		скорость выполнения кода
+		4. Комментарии уменьшают размер кода
+		5. Комментарии увеличивают размер
+		исходного кода
+	*/
+	// http://stackoverflow.com/questions/4423553/do-spaces-comments-slow-javascript-down
+	// | 1, 2?, 5
+
+
+	// 11
+	function A(param) {
+		var m = param
+		m = m + 10
+		return m + param
+	}
+	function B(param) {
+		var m = param
+		m = 20
+		return param + m
+	}
+	console.log(A(10), B(10)) // 30, 30 | 4
+
+	// 12
+	// https://developer.mozilla.org/ru/docs/Web/HTML/Element/script
+	//<!-- HTML4 and (x)HTML -->
+	//<script type="text/javascript" src="javascript.js"><script> | 6
+
+	// 13
+	// http://www.w3schools.com/js/js_comments.asp
+	// 4, 5
+
+	// 14
+	// http://javascript.ru/arithmetic
+	a = 1
+	c = a+++1
+	console.log(c) // 2 | 2
+
+	// 15
+	var str
+	i = '0'
+	console.log(str+i) // undefined0 | 1
+
+	// 16
+	a = "1"
+	a = a + 0
+	a = 1 - 1
+	a = a + 1
+	console.log(a) // | 1
+
+	// 17
+	n = [4,6,19,34,32]
+	console.log(n.sort()) // [19, 32, 34, 4, 6] | 2
+
+	// 18
+	console.log(!+{}[0]) // true | 5
+
+	// 19
+	obj = {a: 2}
+	function f(obj){
+		obj = {a: 3}
+	}
+	f(obj)
+	console.log(obj.a) // 2 | 2
+
+	// 20
+	function f(a, b, c){}
+	arr = [,,,]
+	console.log(arr.length, f.length); // 3 3 | 5
+
+	// 21
+	(function(){
+		console.log([1,2,3].pop.call(arguments))
+	})(10,11,12); // 12 | 4
+
+	// 22
+	console.log(this === window); // true | 2
+
+	// 23
+	// http://www.w3schools.com/js/js_reserved.asp
+	// this, self, window | 1, 4, 7
+
+	// 24
+	(function(){
+		var a = 5
+		this.a = 10
+		console.log(window.a + a)
+		delete window.a
+		delete this.a
+	})()
+	// 15 | 4
+
+	// 25
+	var a = 5
+	this.a = 10
+	console.log(window.a + a) // 20 | 5
+
+	// 26
+	if (function fas(){}){
+		console.log(typeof fas) // undefined | 2
+	}
+
+	// 27
+	trees = ['xyz', 'xxxx', 'test', 'ryan', 'apple']
+	delete trees[3]
+	console.log(trees.length); // 5 | 4
+
+	// 28
+	myobj = {
+		foo: 'bar',
+		func: function(){
+			var self = this
+			console.log(1, this.foo)
+			console.log(2, self.foo);
+			(function(){
+				console.log(1, this.foo)
+				console.log(2, self.foo)
+			})()
+		}
+	}
+	myobj.func();
+	// 1 "bar"
+	// 2 "bar"
+	// 1 undefined
+	// 2 "bar"
+
+	// 29
+	function f1(){
+		[].forEach.call(arguments, function(el){
+			console.log('f1 ', el)
+		})
+	}
+	function f2(){
+		Array.prototype.forEach.call(arguments, function(el){
+			console.log('f2 ', el)
+		})
+	}
+	function f3(){
+		Array.prototype.forEach.bind(arguments, function(el){
+			console.log('f3 ', el)
+		})
+	}
+	function f4(){
+		Array.prototype.forEach.bind(arguments, function(el){
+			console.log('f4 ', el)
+		})()
+	}
+	f1('one', 'two', false) // +
+	f2('one', 'two', false) // +
+	f3('one', 'two', false) // -
+	f4('one', 'two', false) // +
+	// 1, 2, 4
+
+	// 30
+	var _z = 1, _y = _z = typeof _y;
+	console.log(_y) // undefined | 4
+
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		var Tamagochi = function(name, color, health){
+
+			// properties
+			tamagochi = {};
+			tamagochi.name = name || 'No Name';
+			tamagochi.color = color || '#b55';
+			tamagochi.health = health || 100;
+			tamagochi.happyness = 100;
+			tamagochi.hunger = 0;
+			tamagochi.prefix = ':)';
+
+			tamagochi.lastOperation = '';
+
+			tamagochi._createIndicator = function(val){
+				var str = '',
+						i = 0;
+				while (i < 10){
+					str += i < val ? '|' : '-';
+					i++;
+				}
+				return str;
+			};
+
+			tamagochi._createSmile = function(){
+				return (
+					tamagochi.happyness > 60 ? ':)' :
+					tamagochi.happyness > 40 ? ':|' :
+					tamagochi.happyness > 20 ? ':(' : '!!'
+				)
+			};
+
+			// methods
+			tamagochi.init = function(){
+				// parent
+				tamagochi.domElement = document.createElement('div')
+				tamagochi.domElement.style = 'font-family: monospace; color:'+tamagochi.color+';'
+				document.body.appendChild(tamagochi.domElement)
+				// status
+				tamagochi.statusElement = document.createElement('div')
+				tamagochi.domElement.appendChild(tamagochi.statusElement)
+				// feed
+				tamagochi.feedButton = document.createElement('button')
+				tamagochi.feedButton.innerHTML = 'feed'
+				tamagochi.feedButton.addEventListener('click', function(){
+					tamagochi.feed(10)
+				})
+				tamagochi.domElement.appendChild(tamagochi.feedButton)
+				// play
+				tamagochi.playButton = document.createElement('button')
+				tamagochi.playButton.innerHTML = 'play'
+				tamagochi.domElement.appendChild(tamagochi.playButton)
+				tamagochi.playButton.addEventListener('click', function(){
+					tamagochi.play(10)
+				})
+				// life cycle
+				tamagochi.lifeCycle = setInterval(tamagochi.update, 500);
+			};
+
+			tamagochi.feed = function(val){
+				if (tamagochi.hunger > val){
+					tamagochi.hunger -= val;
+					tamagochi.health += 1;
+				}
+				tamagochi.update();
+			}
+
+			tamagochi.play = function(val){
+				if (tamagochi.happyness < 100 - val){
+					tamagochi.happyness += val;
+				}
+				tamagochi.update();
+			}
+
+			tamagochi.update = function(){
+				// if alive
+				if (tamagochi.health > 0){
+					// update properties
+					if (tamagochi.happyness > 0) 	tamagochi.happyness -= 2;
+					if (tamagochi.hunger < 100) 	tamagochi.hunger 		+= 4;
+					if (tamagochi.hunger > 50) {
+						tamagochi.health -= 1
+					} else if (tamagochi.health < 100) {
+						tamagochi.health += 1;
+					}
+					// get current precent
+					currentHealth 		= Math.ceil(tamagochi.health / 10)
+					currentHappyness 	= Math.ceil(tamagochi.happyness / 10)
+					currentHunger 		= Math.ceil(tamagochi.hunger / 10)
+					// result string
+					var str = '';
+					str += tamagochi.name + ' ' + tamagochi._createSmile() + '\<br\>\<br\>';
+					str += 'Health:&nbsp;&nbsp;&nbsp;&nbsp;' + tamagochi._createIndicator(currentHealth) + ' ' + Math.min(tamagochi.health, 100) + '%' + '\<br\>';
+					str += 'Happyness: ' + tamagochi._createIndicator(currentHappyness) + ' ' + tamagochi.happyness + '%' + '\<br\>';
+					str += 'Hunger:&nbsp;&nbsp;&nbsp;&nbsp;' + tamagochi._createIndicator(currentHunger) + ' ' + tamagochi.hunger + '%' + '\<br\>\<br\>\<br\>';
+					tamagochi.statusElement.innerHTML = str;
+
+				// if dead
+				} else {
+					tamagochi.statusElement.innerHTML = tamagochi.name + ' dead...';
+					tamagochi.domElement.removeChild(tamagochi.feedButton)
+					tamagochi.domElement.removeChild(tamagochi.playButton)
+					clearInterval(tamagochi.lifeCycle)
+				}
+			};
+
+			tamagochi.init();
+			// return instance
+			return tamagochi;
+		};
+
+		tam1 = new Tamagochi('Inna');
+	</script>
+</body>
+</html>

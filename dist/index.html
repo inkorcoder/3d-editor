@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="UTF-8">
+<!-- 	<meta http-equiv="cache-control" content="max-age=0" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="expires" content="0" />
+	<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+	<meta http-equiv="pragma" content="no-cache" /> -->
+
+	<title>Document</title>
+
+	<link rel="stylesheet" href="css/icons.css">
+	<link rel="stylesheet" href="css/skin.min.css">
+
+</head>
+<body>
+
+	<header class="main-header" id="main-header" v-bind:class="{ 'left-side-active': isLeft, 'right-side-active': isRight }">
+	
+		<menu>
+	<!-- 		<div class="col-4 left">
+				<button type="button" data-title="Open file"><i class="icon icon-folder"></i></button>
+				<button type="button" data-title="Save file"><i class="icon icon-sd_storage"></i></button>
+				<span class="sep"></span>
+				<div class="btn-group">
+					<button type="button" data-title="Toggle objects bar" v-bind:class="{ 'active': isLeft }" v-on:click="toggleLeftAside"><i class="icon icon-border_left"></i></button>
+					<button type="button" data-title="Toggle object properties" v-bind:class="{ 'active': isRight }" v-on:click="toggleRightAside"><i class="icon icon-border_right"></i></button>
+				</div>
+			</div>
+			<div class="col-5">
+				<ul class="clear-list tabs-list">
+					<li v-on:click="setActiveTab('terrain')" v-bind:class="{'active' : tabs.terrain}">Terrain</li>
+					<li v-on:click="setActiveTab('objects')" v-bind:class="{'active' : tabs.objects}">Objects</li>
+				</ul>
+			</div>
+			<div class="col-3 right">
+				<button type="button" data-title="Settings" ><i class="icon icon-settings"></i></button>
+				<button type="button" data-title="Exit" ><i class="icon icon-close"></i></button>
+			</div> -->
+			<ul class="clear-list">
+				<li>
+					<a>File</a>
+					<ul>
+						<li><a>New file<span class="help">Ctrl+N</span></a></li>
+						<li><a>Open file<span class="help">Ctrl+O</span></a></li>
+						<li class="separator"></li>
+						<li><a>Save file<span class="help">Ctrl+S</span></a></li>
+					</ul>
+				</li>
+				<li>
+					<a>View</a>
+					<ul>
+						<li><a v-on:click="toggleLeftAside" v-bind:class="{ 'active': isLeft }"><i class="icon icon-check"></i>Left sidebar<span class="help">Ctrl+Shift+L</span></a></li>
+						<li><a v-on:click="toggleRightAside" v-bind:class="{ 'active': isRight }"><i class="icon icon-check"></i>Right sidebar<span class="help">Ctrl+Shift+R</span></a></li>
+						<li><a v-on:click="toggleAxis" v-bind:class="{ 'active': axis.visible }"><i class="icon icon-check"></i>Axis helper<span class="help">Ctrl+Shift+H</span></a></li>
+						<li><a v-on:click="toggleLog" v-bind:class="{ 'active': log.isActive }"><i class="icon icon-check"></i>Console<span class="help">Ctrl+Shift+C</span></a></li>
+					</ul>
+				</li>
+				<li>
+					<a>Mode</a>
+					<ul>
+						<li><a v-on:click="setActiveTab('terrain')" v-bind:class="{'active' : tabs.terrain}"><i class="icon icon-check"></i>Terrain</a></li>
+						<li><a v-on:click="setActiveTab('objects')" v-bind:class="{'active' : tabs.objects}"><i class="icon icon-check"></i>Objects</a></li>
+					</ul>
+				</li>
+	<!-- 			<li>
+					<a>Theme</a>
+					<ul>
+						<li><a v-on:click="setTheme('skin')" v-bind:class="{'active' : theme === 'skin'}"><i class="icon icon-check"></i>Default</a></li>
+						<li><a v-on:click="setTheme('mac')" v-bind:class="{'active' : theme === 'mac'}"><i class="icon icon-check"></i>Mac OS</a></li>
+					</ul>
+				</li> -->
+			</ul>
+			<div class="information">
+				Objects: <span class="count">{{objecter.objects.length}}</span>
+			</div>
+		</menu>
+		<!-- <link rel="stylesheet" href="css/{{theme}}.min.css"> -->
+	</header>
+	
+
+	<aside class="main-aside" id="main-aside" v-bind:class="{'active':isActive, 'console-offset': log.isActive}">
+	
+		<div class="header">
+			<div class="row">
+				<div class="col-12">
+					<div class="relative">
+						<input type="text" placeholder="Type to search..." class="input search" v-model="searchModel">
+						<span class="clear-input" v-if="searchModel !== ''" v-on:click="clearInput">
+							<i class="icon icon-close"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<!-- objects -->
+		<div v-if="instrument === 'objects'" class="filter">
+			<div class="row spaced-horizontal">
+				<div class="col-6">
+					<button type="button" v-on:click="showAllLists" class="btn btn-block">Show all</button>
+				</div>
+				<div class="col-6">
+					<button type="button" v-on:click="hideAllLists" class="btn btn-block">Hide all</button>
+				</div>
+			</div>
+		</div>
+		<div v-if="instrument === 'objects'" class="list">
+			<ul class="clear-list" v-bind:class="{'active': lists[folder.name]}" v-for="folder in data | orderBy 'name'">
+				<li class="anchor" v-on:click="toggleList(folder.name)">
+					<span><i class="icon icon-folder"></i> {{folder.name}}</span>
+				</li>
+				<li v-for="object in folder.files | filterBy searchModel" v-if="lists[folder.name]" v-on:click="objecter.setActiveObject(object)" v-bind:class="{'active': objecter.activeObject === object}">
+					<figure>
+						<img v-bind:src="'files/'+object+'/img.png'" alt="">
+						<figcaption>{{ object.split('/')[1] }}</figcaption>
+					</figure>
+				</li>
+			</ul>
+		</div>
+		<footer v-if="instrument === 'objects'">
+			<div class="row">
+				<div class="col-6">Total: </div>
+				<div class="col-6 right">current group: </div>
+			</div>
+		</footer><!-- objects -->
+	
+		<!-- terrain -->
+		<div v-if="instrument === 'terrain'" class="filter">
+			<div class="row spaced-horizontal">
+				<div class="col-6"><button type="button" class="btn btn-primary btn-block" v-on:click="showTerrainPopup">Add</button></div>
+				<div class="col-6"><button type="button" class="btn btn-block" v-on:click="terrain.remove()">Remove</button></div>
+			</div>
+		</div>
+		<div v-if="instrument === 'terrain'" class="list">
+			<div class="row spaced">
+				<div class="col-12">
+					<h3 class="title"><span>Terrain properties</span></h3>
+				</div>
+			</div>
+			<div class="row spaced-horizontal">
+				<div class="col-12">
+					<div class="checkbox">
+						<input type="checkbox" name="" id="terrainWireframe" v-on:change="setWireframe">
+						<label for="terrainWireframe">Wireframe</label>
+					</div>
+				</div>
+			</div>
+			<div class="row spaced-horizontal spaced-top">
+				<div class="col-12">
+					<div class="checkbox">
+						<input type="checkbox" name="" id="terrainSteps" v-on:change="setSteps">
+						<label for="terrainSteps">Steps grid</label>
+					</div>
+				</div>
+			</div>
+			<div class="row spaced">
+				<div class="col-12">
+					<label for="terrainColor">Color</label>
+					<input id="terrainColor" type="text" class="input"  v-on:focus="setColorPopupCaller" v-on:change="setTerrainColor" value="{{ terrain.color }}">
+				</div>
+			</div>
+			<div class="row spaced-horizontal">
+				<div class="col-12">
+					<h3 class="title"><span>Brush</span></h3>
+					<span class="space"></span>
+					<ul class="clear-list tabs-list table">
+						<li v-on:click="setActiveBrushTab('height')" v-bind:class="{'active' : brushTabs.height}">Height</li>
+						<li v-on:click="setActiveBrushTab('color')" v-bind:class="{'active' : brushTabs.color}">Color</li>>
+						<li v-on:click="setActiveBrushTab('plaining')" v-bind:class="{'active' : brushTabs.plaining}">Plaining</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row spaced" v-if="brushTabs.height">
+				<div class="col-12"><label for="terrainWeight">Weight</label></div>
+				<div class="col-9">
+					<input type="range" id="terrainWeight" class="range" min="0.1" max="10" step="0.1" value="1" v-model="terrain.weight">
+					<div class="row slider-captions">
+						<div class="col-6 left">0.1</div>
+						<div class="col-6 right">10</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ terrain.weight }}"  v-model="terrain.weight">
+				</div>
+			</div>
+			<div class="row spaced" v-if="brushTabs.color || brushTabs.plaining">
+				<div class="col-12"><label for="terrainBrushSize">Brush size</label></div>
+				<div class="col-9">
+					<input type="range" id="terrainBrushSize" class="range" min="1" max="10" step="1" value="5" v-model="terrain.brushSize">
+					<div class="row slider-captions">
+						<div class="col-6 left">1</div>
+						<div class="col-6 right">10</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ terrain.brushSize }}"  v-model="terrain.brushSize" maxlength="2">
+				</div>
+			</div>
+			<div class="row spaced-horizontal" v-if="brushTabs.color">
+				<div class="col-12">
+					<label for="terrainBrushColor">Color</label>
+					<input id="terrainBrushColor" type="text" class="input"  v-on:focus="setColorPopupCaller" v-model="terrain.brushColor">
+				</div>
+			</div>
+		</div><!-- terrain -->
+	
+		<!--  -->
+		<button class="toggle-aside" v-on:click="toggleAside">
+			<i class="icon icon-navigate_next"></i>
+		</button>
+	
+	</aside>
+
+	<aside class="object-aside" id="object-aside" v-bind:class="{'active':isActive, 'console-offset': log.isActive}">
+	
+		<div class="scene" v-bind:style="{bottom: 100-separatorPosition+'%'}">
+			<ul class="clear-list clearfix">
+				<li v-for="object in hierarchy | isEmpty">
+					<span class="name">{{object.name}}</span>
+					<span class="buttons">
+						<button class="btn btn-small" v-bind:class="{'btn-faded': !object.visible}" v-on:click="setVisible(object)"><i class="icon icon-visibility"></i></button>
+						<button class="btn btn-small" v-on:click="removeItem(object)">&times;</button>
+					</span>
+				</li>
+			</ul>
+		</div>
+	
+		<div class="separator clearfix" id="separator" v-bind:style="{top: separatorPosition+'%'}">
+			<button class="pull-left" v-on:click="separatorUp"><i class="icon icon-expand_less"></i></button>
+			<i class="icon icon-menu"></i>
+			<button class="pull-right" v-on:click="separatorDown"><i class="icon icon-expand_more"></i></button>
+		</div>
+	
+		<div class="body" v-bind:style="{top: separatorPosition+'%'}">
+			<!-- position -->
+			<div class="row spaced-horizontal">
+				<div class="col-12">
+					<h4 class="title"><span>Position</span></h4>
+				</div>
+			</div>
+			<div class="row spaced-horizontal">
+				<div class="col-4">
+					<label for="objectPositionX">x</label>
+					<input type="text" class="input" value="{{ object.position.x }}"  v-model="objectPositionX" id="objectPositionX" v-on:keyup="setPositionX">
+				</div>
+				<div class="col-4">
+					<label for="objectPositionY">y</label>
+					<input type="text" class="input" value="{{ object.position.y }}"  v-model="objectPositionY" id="objectPositionY" v-on:keyup="setPositionY">
+				</div>
+				<div class="col-4">
+					<label for="objectPositionZ">z</label>
+					<input type="text" class="input" value="{{ object.position.z }}"  v-model="objectPositionZ" id="objectPositionZ" v-on:keyup="setPositionZ">
+				</div>
+			</div>
+	
+			<!-- rotation -->
+			<div class="row spaced">
+				<div class="col-12">
+					<h4 class="title"><span>Rotation</span></h4>
+				</div>
+			</div>
+			<!-- x -->
+			<div class="row spaced-horizontal">
+				<div class="col-2 range-name">
+					<button class="btn btn-primary" data-title="Reset X" v-on:click="objectRotationX = 0, object.rotation.x = 0">x</button>
+				</div>
+				<div class="col-7 collapsed">
+					<input type="range" class="range" min="-180" max="180" step="1" value="0" v-model="objectRotationX" v-on:input="setRotationX">
+					<div class="row slider-captions">
+						<div class="col-4 left">-180&deg;</div>
+						<div class="col-4 center">0&deg;</div>
+						<div class="col-4 right">180&deg;</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ object.rotation.x }}"  v-model="objectRotationX" v-on:keyup="setRotationX">
+				</div>
+			</div>
+			<!-- y -->
+			<div class="row spaced-horizontal">
+				<div class="col-2 range-name">
+					<button class="btn btn-primary" data-title="Reset Y" v-on:click="objectRotationY = 0, object.rotation.y = 0">y</button>
+				</div>
+				<div class="col-7 collapsed">
+					<input type="range" class="range" min="-180" max="180" step="1" value="0" v-model="objectRotationY" v-on:input="setRotationY">
+					<div class="row slider-captions">
+						<div class="col-4 left">-180&deg;</div>
+						<div class="col-4 center">0&deg;</div>
+						<div class="col-4 right">180&deg;</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ object.rotation.y }}"  v-model="objectRotationY" v-on:keyup="setRotationY">
+				</div>
+			</div>
+			<!-- z -->
+			<div class="row spaced-horizontal">
+				<div class="col-2 range-name">
+					<button class="btn btn-primary" data-title="Reset Z" v-on:click="objectRotationZ = 0, object.rotation.z = 0">z</button>
+				</div>
+				<div class="col-7 collapsed">
+					<input type="range" class="range" min="-180" max="180" step="1" value="0" v-model="objectRotationZ" v-on:input="setRotationZ">
+					<div class="row slider-captions">
+						<div class="col-4 left">-180&deg;</div>
+						<div class="col-4 center">0&deg;</div>
+						<div class="col-4 right">180&deg;</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ object.rotation.z }}"  v-model="objectRotationZ" v-on:keyup="setRotationZ">
+				</div>
+			</div>
+	
+			<!-- scale -->
+			<div class="row spaced">
+				<div class="col-12">
+					<h4 class="title"><span>Scale</span></h4>
+				</div>
+			</div>
+			<!-- x -->
+			<div class="row spaced-horizontal">
+				<div class="col-2 range-name">
+					<button class="btn btn-primary" data-title="Reset X" v-on:click="objectScaleX = 1, object.scale.x = 1">x</button>
+				</div>
+				<div class="col-7 collapsed">
+					<input type="range" class="range" min="0.05" max="10" step="0.05" value="1" v-model="objectScaleX" v-on:input="setScaleX">
+					<div class="row slider-captions">
+						<div class="col-6 left">0.05</div>
+						<div class="col-6 right">10</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ object.scale.x }}"  v-model="objectScaleX" v-on:keyup="setScaleX">
+				</div>
+			</div>
+			<!-- y -->
+			<div class="row spaced-horizontal">
+				<div class="col-2 range-name">
+					<button class="btn btn-primary" data-title="Reset Y" v-on:click="objectScaleY = 1, object.scale.y = 1">y</button>
+				</div>
+				<div class="col-7 collapsed">
+					<input type="range" class="range" min="0.05" max="10" step="0.05" value="1" v-model="objectScaleY" v-on:input="setScaleY">
+					<div class="row slider-captions">
+						<div class="col-6 left">0.05</div>
+						<div class="col-6 right">10</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ object.scale.y }}"  v-model="objectScaleY" v-on:keyup="setScaleY">
+				</div>
+			</div>
+			<!-- z -->
+			<div class="row spaced-horizontal">
+				<div class="col-2 range-name">
+					<button class="btn btn-primary" data-title="Reset Z" v-on:click="objectScaleZ = 1, object.scale.z = 1">z</button>
+				</div>
+				<div class="col-7 collapsed">
+					<input type="range" class="range" min="0.05" max="10" step="0.05" value="1" v-model="objectScaleZ" v-on:input="setScaleZ">
+					<div class="row slider-captions">
+						<div class="col-6 left">0.05</div>
+						<div class="col-6 right">10</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ object.scale.z }}"  v-model="objectScaleZ" v-on:keyup="setScaleZ">
+				</div>
+			</div>
+	
+			<!-- material -->
+			<div class="row spaced">
+				<div class="col-12">
+					<h3 class="title"><span>Material</span></h3>
+					<span class="space"></span>
+					<div class="select">
+						<input type="text" class="input" id="objectMaterialType" v-model="objectMaterialType" v-on:change="setMaterialType" readonly value="{{ objectMaterialType }}">
+						<label for="objectMaterialType"><span class="icon icon-unfold_more"></span></label>
+						<ul class="clear-list">
+							<li v-on:click="setMaterialType('Mesh Basic material')" 
+									v-bind:class="{'active': objectMaterialType == 'Mesh Basic material'}">
+								<i class="icon icon-check"></i>
+								Mesh Basic material
+							</li>
+							<li v-on:click="setMaterialType('Mesh Depth material')" 
+									v-bind:class="{'active': objectMaterialType == 'Mesh Depth material'}">
+								<i class="icon icon-check"></i>
+								Mesh Depth material
+							</li>
+							<li v-on:click="setMaterialType('Mesh Lambert material')" v-bind:class="{'active': objectMaterialType == 'Mesh Lambert material'}">
+								<i class="icon icon-check"></i>
+								Mesh Lambert material
+							</li>
+							<li v-on:click="setMaterialType('Mesh Normal material')" 
+									v-bind:class="{'active': objectMaterialType == 'Mesh Normal material'}">
+								<i class="icon icon-check"></i>
+								Mesh Normal material
+							</li>
+							<li v-on:click="setMaterialType('Mesh Phong material')" 
+									v-bind:class="{'active': objectMaterialType == 'Mesh Phong material'}">
+								<i class="icon icon-check"></i>
+								Mesh Phong material
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+	
+			<div class="row spaced-horizontal">
+				<div class="col-12">
+					<label for="">Reflectivity</label>
+				</div>
+				<div class="col-9">
+					<input type="range" class="range" min="0.1" max="1" step="0.1" value="0.1" v-model="objectMaterialReflectivity" v-on:input="setMaterialReflectivity">
+					<div class="row slider-captions">
+						<div class="col-6 left">0.1</div>
+						<div class="col-6 right">1</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" value="{{ objectMaterialReflectivity }}" v-model="objectMaterialReflectivity" v-on:input="setMaterialReflectivity">
+				</div>
+			</div>
+	
+			<div class="row spaced">
+				<div class="col-12">
+					<label for="objectMaterialOpacity">Opacity</label>
+				</div>
+				<div class="col-7">
+					<input type="range" class="range" min="0.1" max="1" step="0.1" value="1" v-model="objectMaterialOpacity" v-on:input="setMaterialOpacity">
+					<div class="row slider-captions">
+						<div class="col-6 left">0.1</div>
+						<div class="col-6 right">1</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<input type="text" class="input" id="objectMaterialOpacity" value="{{ objectMaterialOpacity }}" v-model="objectMaterialOpacity" v-on:input="setMaterialOpacity">
+				</div>
+				<div class="col-1 collapse-left right">
+					<div class="checkbox collapsed">
+						<input type="checkbox" name="" id="objectMaterialTransparent">
+						<label for="objectMaterialTransparent">&nbsp;</label>
+					</div>
+				</div>
+			</div>
+	
+			<div class="row spaced">
+				<div class="col-4"><label for="objectMaterialColor">Color</label></div>
+				<div class="col-8">
+					<input type="text" class="input" id="objectMaterialColor" v-on:focus="setColorPopupCaller" v-model="objectMaterialColor">
+				</div>
+			</div>
+	
+			<div class="row spaced-horizontal">
+				<div class="col-4"><label for="objectMaterialEmissive">Emissive</label></div>
+				<div class="col-8">
+					<input type="text" class="input" id="objectMaterialEmissive" v-on:focus="setColorPopupCaller" v-model="objectMaterialEmissive">
+				</div>
+			</div>
+	
+	
+		</div>
+		<footer></footer>
+	
+		<button class="toggle-aside" v-on:click="toggleAside">
+			<i class="icon icon-navigate_next"></i>
+		</button>
+	</aside>
+
+	<div class="log" v-bind:class="{'active': isActive}" id="log">
+		<nav>
+			<button class="btn btn-primary">Clear</button>
+			<button class="btn" v-on:click="isActive = false">&times;</button>
+		</nav>
+		<div class="content">
+			Console
+		</div>
+	</div>
+
+	<div class="popup" id="color-popup" v-bind:class="{'active': isActive}">
+		<div class="inner">
+			<div class="clearfix">
+				<div class="col-8">
+					<div class="row">
+						<div class="col-11 collapsed relative">
+							<canvas class="color-canvas" id="colorPalette" width="200" height="200" v-on:mousedown="enablePointer" v-on:mouseup="disablePointer" v-on:mouseover="disablePointer" v-on:mousemove="setPosition" v-on:click="setPosition($event,true)"></canvas>
+							<div class="pointer"></div>
+						</div>
+						<div class="col-1 relative">
+							<input type="range" class="range vertical" min="0" max="255" step="1" value="255" v-model="brightness" v-on:input="setBrightness"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-4">
+					<button class="btn btn-block btn-primary" v-on:click="confirmColor">Ok</button>
+					<span class="space"></span>
+					<button class="btn btn-block" v-on:click="closePopup">Close</button>
+					<span class="space"></span>
+					<div class="row">
+						<div class="col-6">Red
+						</div>
+						<div class="col-6">
+							<input type="text" class="input" v-model="color.r" readonly>
+						</div>
+					</div>
+					<span class="space"></span>
+					<div class="row">
+						<div class="col-6">Green
+						</div>
+						<div class="col-6">
+							<input type="text" class="input" v-model="color.g" readonly>
+						</div>
+					</div>
+					<span class="space"></span>
+					<div class="row">
+						<div class="col-6">Blue
+						</div>
+						<div class="col-6">
+							<input type="text" class="input" v-model="color.b" readonly>
+						</div>
+					</div>
+					<span class="space"></span>
+					<div class="row">
+						<div class="col-4">HEX</div>
+						<div class="col-8">
+							<input type="text" class="input" v-model="color.hex" readonly>
+						</div>
+					</div>
+					<span class="space"></span>
+					<div class="color"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="popup smallest" id="terrain-add-popup" v-bind:class="{'active': isActive}">
+		<div class="inner">
+	
+	<!-- 		<div class="clearfix">
+				<label for="newTerrainName">Name</label>
+				<input id="newTerrainName" type="text" class="input" placeholder="Type name...">
+			</div> -->
+	<!-- 		<div class="row">
+				<div class="col-4">
+					<label for="newTerrainWidth">Width</label>
+					<div class="relative">
+						<input id="newTerrainWidth" class="input number" v-model="terrain.width" placeholder="20" value="20">
+						<div class="calc">
+							<button type="button" class="plus"><i class="icon icon-arrow_drop_up"></i></button>
+							<button type="button" class="minus"><i class="icon icon-arrow_drop_down"></i></button>
+						</div>
+					</div>
+				</div>
+				<div class="col-4">
+					<label for="newTerrainLength">Length</label>
+					<div class="relative">
+						<input id="newTerrainLength" class="input number"  v-model="terrain.height" placeholder="20" value="20">
+						<div class="calc">
+							<button type="button" class="plus"><i class="icon icon-arrow_drop_up"></i></button>
+							<button type="button" class="minus"><i class="icon icon-arrow_drop_down"></i></button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<span class="space"></span> -->
+			<div class="row">
+				<div class="col-6">
+					<label for="newTerrainWidthSegments">Width</label>
+					<div class="relative">
+						<input id="newTerrainWidthSegments" type="text" class="input number"  v-model="terrain.widthSegments" placeholder="10" value="10">
+						<div class="calc">
+							<button type="button" class="plus"><i class="icon icon-arrow_drop_up"></i></button>
+							<button type="button" class="minus"><i class="icon icon-arrow_drop_down"></i></button>
+						</div>
+					</div>
+				</div>
+				<div class="col-6">
+					<label for="newTerrainLengthSegments">Length</label>
+					<div class="relative">
+						<input id="newTerrainLengthSegments" type="text" class="input number"  v-model="terrain.heightSegments" placeholder="10" value="10">
+						<div class="calc">
+							<button type="button" class="plus"><i class="icon icon-arrow_drop_up"></i></button>
+							<button type="button" class="minus"><i class="icon icon-arrow_drop_down"></i></button>
+						</div>
+					</div>
+				</div>
+			</div>
+	
+			<div class="footer clearfix right">
+				<button type="button" class="btn btn-primary" v-on:click="addTerrain">Add</button>
+				<button type="button" class="btn" v-on:click="closePopup">Cancel</button>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="renderWrapper" class="renderer-wrapper" v-bind:class="{'offset-left': isOffsetLeft, 'offset-right': isOffsetRight}">
+		
+	</div>
+
+<!-- 	<div class="info-bar" id="info-bar">
+		<div class="row">
+			<div class="col-5">
+				Camera pos: [ {{ 
+					camera.position.x.toFixed(1) + ", "
+					+camera.position.y.toFixed(1) + ", "
+					+camera.position.z.toFixed(1)
+				}} ]
+			</div>
+			<div class="col-5">
+				Camera rot: [ {{ 
+					camera.rotation.x.toFixed(1) + ", "
+					+camera.rotation.y.toFixed(1) + ", "
+					+camera.rotation.z.toFixed(1)
+				}} ]
+			</div>
+			<div class="col-2">
+				FPS: {{ (1000 / fps).toFixed(0) }}
+			</div>
+		</div>
+	</div> -->
+
+	<script src="js/vue.js"></script>
+	<script src="js/vue-utils.min.js"></script>
+	<script src="js/log.min.js"></script>
+	<script src="js/global-utils.min.js"></script>
+	<script src="js/data-loader.min.js"></script>
+	<script src="js/stats.js"></script>
+	<script src="js/three.js"></script>
+	<script src="js/three-utils.min.js"></script>
+	<script src="js/TransformControls.js"></script>
+	<script src="js/OrbitControls.js"></script>
+	<script src="js/Projector.js"></script>
+	<script src="js/terrain.min.js"></script>
+	<script src="js/main.min.js"></script>
+	<script src="js/objecter.min.js"></script>
+	<script src="js/keyboard.min.js"></script>
+	<script src="js/color-popup.min.js"></script>
+	<script src="js/terrain-add-popup.min.js"></script>
+	<script src="js/main-aside.min.js"></script>
+	<script src="js/object-aside.min.js"></script>
+	<script src="js/main-bar.min.js"></script>
+	<script src="js/vue-renderer.min.js"></script>
+	<!-- <script src="js/info-bar.min.js"></script> -->
+
+</body>
+</html>
